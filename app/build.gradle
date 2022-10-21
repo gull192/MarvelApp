@@ -2,7 +2,9 @@ plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
     id 'kotlin-android-extensions'
+    id 'io.gitlab.arturbosch.detekt'
 }
+apply plugin: 'io.gitlab.arturbosch.detekt'
 
 android {
     compileSdk 32
@@ -76,3 +78,6 @@ dependencies {
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
 }
 
+detekt {
+
+}
