@@ -4,6 +4,7 @@ package gruzdev.artem.marvelapp.screens.select_person_screen.components
 
 import android.util.Log
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.clickable
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -23,7 +24,7 @@ import kotlin.math.abs
 
 @OptIn(ExperimentalSnapperApi::class)
 @Composable
-fun RowHero(heros: List<HeroCard>, changeCurrentItem: (Int) -> Unit) {
+fun RowHero(heros: List<HeroCard>, changeCurrentItem: (Int) -> Unit, onclick: (HeroCard) -> Unit) {
     val lazyListState = rememberLazyListState()
     val layoutInfo: LazyListSnapperLayoutInfo = rememberLazyListSnapperLayoutInfo(lazyListState)
     val  maxItemFling = 1
@@ -61,10 +62,11 @@ fun RowHero(heros: List<HeroCard>, changeCurrentItem: (Int) -> Unit) {
                 modifier = Modifier
                     .width(350.dp)
                     .height(550.dp)
+                    .clickable { onclick(heros[hero]) }
                     .graphicsLayer {
-                    val offset = layoutInfo.currentItem?.offset
-                    val procentOffset: Float = abs(offset!!)/layoutInfo.endScrollOffset.toFloat()
-                        Log.e("OFFSET", offset.toString())
+                    val offset: Int = layoutInfo.currentItem?.offset!!
+                    val procentOffset: Float = abs(offset)/layoutInfo.endScrollOffset.toFloat()
+                    Log.e("OFFSET", offset.toString())
                     lerp(
                         start = 0.7f,
                         stop = 1f,
@@ -76,7 +78,6 @@ fun RowHero(heros: List<HeroCard>, changeCurrentItem: (Int) -> Unit) {
                 }
             )
         }
-
     }
-
 }
+
