@@ -1,10 +1,11 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
-    id 'kotlin-android-extensions'
     id 'io.gitlab.arturbosch.detekt'
+    id("com.google.devtools.ksp") version "1.6.21-1.0.5"
 }
 apply plugin: 'io.gitlab.arturbosch.detekt'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdk 32
@@ -46,6 +47,13 @@ android {
             excludes += '/META-INF/{AL2.0,LGPL2.1}'
         }
     }
+    applicationVariants.all {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
+        }
+    }
 }
 
 dependencies {
@@ -54,12 +62,13 @@ dependencies {
     implementation "dev.chrisbanes.snapper:snapper:$snapper_version"
 
     // coil
-    def coil_version = "2.1.0"
+    def coil_version = "2.2.2"
     implementation("io.coil-kt:coil-compose:$coil_version")
 
-    // navigation
-    def nav_version = "2.5.2"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    //Compose Destinations
+    def compose_destinations_version = "1.5.23-beta"
+    implementation("io.github.raamcosta.compose-destinations:core:$compose_destinations_version")
+    ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_version")
 
     // auto gen
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
@@ -76,8 +85,4 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
-}
-
-detekt {
-
 }
