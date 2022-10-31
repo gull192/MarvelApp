@@ -1,7 +1,5 @@
 package gruzdev.artem.marvelapp.screens.select_person_screen
 
-import android.util.Log
-import gruzdev.artem.marvelapp.core.navigation.navigate
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -17,41 +15,40 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.os.bundleOf
-import androidx.navigation.NavController
+import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.RootNavGraph
+import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import gruzdev.artem.marvelapp.R
-import gruzdev.artem.marvelapp.core.navigation.Screens
 import gruzdev.artem.marvelapp.core.rememberStateWithLifecycle
+import gruzdev.artem.marvelapp.screens.destinations.PersonScreenDestination
 import gruzdev.artem.marvelapp.screens.select_person_screen.components.BackgroundElement
 import gruzdev.artem.marvelapp.screens.select_person_screen.components.RowHero
 import gruzdev.artem.marvelapp.ui.theme.Dune
 import gruzdev.artem.marvelapp.ui.theme.Typography
 
+@RootNavGraph(start = true)
+@Destination
 @Composable
-fun SelectPersonScreen(navController: NavController) {
+fun SelectPersonScreen(navigator: DestinationsNavigator) {
     SelectPersonScreen(
-        navController = navController,
+        navController = navigator,
         viewModel = SelectPersonViewModel()
     )
 }
 
 @Composable
 private fun SelectPersonScreen(
-    navController: NavController,
+    navController: DestinationsNavigator,
     viewModel: SelectPersonViewModel,
 ) {
-
     val uiState by rememberStateWithLifecycle(viewModel.state)
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 is SelectPersonUIEffect.NavigateToPersonScreen -> {
-                    Log.e("NAVIGATION1", effect.heroInfo.photoUrl)
-                    navController.navigate(
-                        route = Screens.PersonDetailsScreen.name,
-                        params = bundleOf("HERO_INFO" to effect.heroInfo)
-                    )
+                    navController.navigate(PersonScreenDestination(effect.heroInfo))
                 }
+                else -> {}
             }
         }
     }

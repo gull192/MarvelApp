@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import gruzdev.artem.marvelapp.R
-import gruzdev.artem.marvelapp.screens.persom_screen.model.HeroInfo
+import gruzdev.artem.marvelapp.core.navigation.model.asHeroInfo
 import gruzdev.artem.marvelapp.screens.select_person_screen.model.HeroCard
 import gruzdev.artem.marvelapp.ui.theme.*
 import kotlinx.coroutines.flow.*
@@ -28,42 +28,48 @@ class SelectPersonViewModel : ViewModel() {
                         image = R.drawable.halk_sample,
                         title = "Halk",
                         color = Color.Black,
-                        photoURL = "1"
+                        photoURL = "https://upload.wikimedia.org/wikipedia/ru/c/cc/Hulk_Marvel.jpg",
+                        descriptionHero = "Im halk"
                     ),
                     HeroCard(
                         id = 0,
                         image = R.drawable.iron_man,
                         title = "Iron man",
                         color = Purple500,
-                        photoURL = "1"
+                        photoURL = "https://kartinkin.net/uploads/posts/2021-07/1625622278_6-kartinkin-com-p-zheleznii-chelovek-art-art-krasivo-6.jpg",
+                        descriptionHero = " Im iron man"
                     ),
                     HeroCard(
                         id = 0,
                         image = R.drawable.doctor_strange,
                         title = "Doctor strange",
                         color = Purple700,
-                        photoURL = "1"
+                        photoURL = "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/b/bd/Defender_Strange_Infobox.webp/revision/latest?cb=20220104021959&path-prefix=ru",
+                        descriptionHero = "Im doctor strange"
                     ),
                     HeroCard(
                         id = 0,
                         image = R.drawable.spider_man,
                         title = "Spider_man",
                         color = Teal200,
-                        photoURL = "1"
+                        photoURL = "https://upload.wikimedia.org/wikipedia/ru/thumb/c/cb/AmazingSpiderMan50.jpg/231px-AmazingSpiderMan50.jpg",
+                        descriptionHero = "Im spider man"
                     ),
                     HeroCard(
                         id = 0,
                         image = R.drawable.capitain_america,
                         title = "Captain america",
                         color = Purple200,
-                        photoURL = "1"
+                        photoURL = "https://upload.wikimedia.org/wikipedia/ru/thumb/6/6b/Chris_Evans_as_Steve_Rogers_Captain_America.jpg/640px-Chris_Evans_as_Steve_Rogers_Captain_America.jpg",
+                        descriptionHero = "Im capitan americ"
                     ),
                     HeroCard(
                         id = 0,
                         image = R.drawable.deadpoll,
                         title = "Deadpoll",
                         color = Purple200,
-                        photoURL = ""
+                        photoURL = "https://www.mirf.ru/wp-content/uploads/2016/02/deadpool_121-e1454924608869.jpg",
+                        descriptionHero = "Im deadpoll"
                     ),
                 )
             )
@@ -100,10 +106,6 @@ class SelectPersonViewModel : ViewModel() {
     }
 
     private suspend fun navigateToHeroDetails(heroCard: HeroCard) {
-        val heroInfo = heroCard.let { HeroInfo(
-            id = it.id,
-            photoUrl = it.photoURL
-        ) }
-        _effect.emit(SelectPersonUIEffect.NavigateToPersonScreen(heroInfo))
+        _effect.emit(SelectPersonUIEffect.NavigateToPersonScreen(heroCard.asHeroInfo()))
     }
 }

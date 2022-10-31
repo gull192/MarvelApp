@@ -8,5 +8,6 @@ data class HeroCard(
     val image: Int,
     val title: String,
     val color: Color,
+    val descriptionHero: String,
     val photoURL: String
 )
