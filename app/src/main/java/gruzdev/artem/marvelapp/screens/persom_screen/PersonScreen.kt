@@ -1,14 +1,13 @@
 package gruzdev.artem.marvelapp.screens.persom_screen
 
-import android.util.Log
+import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
@@ -16,13 +15,18 @@ import gruzdev.artem.marvelapp.screens.persom_screen.components.BackButton
 import gruzdev.artem.marvelapp.screens.persom_screen.components.BackgroundImage
 import gruzdev.artem.marvelapp.core.model.HeroInfo
 import gruzdev.artem.marvelapp.core.rememberStateWithLifecycle
+import gruzdev.artem.marvelapp.core.ui.di.daggerSavedStateViewModel
+import gruzdev.artem.marvelapp.screens.persom_screen.di.personScreenComponent
 import gruzdev.artem.marvelapp.ui.theme.Typography
 
 @Destination
 @Composable
-fun PersonScreen(heroInfo: HeroInfo, navigator: DestinationsNavigator) {
-    val viewModel = PersonScreenViewModel()
-    viewModel.sendEvent(PersonScreenUIEvent.OnGetData(heroInfo))
+fun PersonScreen(navigator: DestinationsNavigator, characterId: Int) {
+    val activity = LocalContext.current as Activity
+    val viewModel =  daggerSavedStateViewModel {
+        personScreenComponent.getInstance(activity).personScreenViewModelFactory.create(it)
+    }
+    viewModel.sendEvent(PersonScreenUIEvent.OnGetData(characterId))
     PersonScreen(
         viewModel = viewModel,
         onBack = { navigator.popBackStack() }

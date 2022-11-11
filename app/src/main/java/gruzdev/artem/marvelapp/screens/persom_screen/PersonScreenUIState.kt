@@ -14,7 +14,8 @@ data class PersonUIState (
 
 sealed interface PersonScreenUIEvent {
     object OnBackClick : PersonScreenUIEvent
-    class OnGetData (val heroInfo: HeroInfo) : PersonScreenUIEvent
+    class OnGetData (val characterId: Int) : PersonScreenUIEvent
+    object OnOpenWithArg : PersonScreenUIEvent
 }
 
 sealed interface PersonScreenUIEffect {
