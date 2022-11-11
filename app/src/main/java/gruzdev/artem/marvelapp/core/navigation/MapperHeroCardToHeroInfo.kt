@@ -5,6 +5,7 @@ import gruzdev.artem.marvelapp.screens.select_person_screen.model.HeroCard
 
 fun HeroCard.asHeroInfo(): HeroInfo {
     return HeroInfo (
+        id = id,
         heroName = title,
         photoUrl = photoURL,
         descriptionHero = descriptionHero

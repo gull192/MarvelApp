@@ -5,7 +5,6 @@ import androidx.compose.ui.graphics.Color
 
 data class HeroCard(
     val id: Int, //вместо int сделать другой индификатор для api
-    val image: Int,
     val title: String,
     val color: Color,
     val descriptionHero: String,
