@@ -4,6 +4,7 @@ import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -25,6 +26,7 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import gruzdev.artem.marvelapp.R
 import gruzdev.artem.marvelapp.core.model.HeroInfo
 import gruzdev.artem.marvelapp.core.rememberStateWithLifecycle
+import gruzdev.artem.marvelapp.core.showToast
 import gruzdev.artem.marvelapp.core.ui.di.daggerSavedStateViewModel
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
 import gruzdev.artem.marvelapp.screens.destinations.PersonScreenDestination
@@ -58,53 +60,71 @@ private fun SelectPersonScreen(
     navigateToPersonScreen: (Int) -> Unit
 ) {
     val uiState by rememberStateWithLifecycle(viewModel.state)
+    val context = LocalContext.current
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
                 is SelectPersonUIEffect.NavigateToPersonScreen -> {
                     navigateToPersonScreen(effect.characterId)
                 }
-                else -> {}
+                is SelectPersonUIEffect.ErrorToLoadData -> {
+                    showToast(context, effect.error)
+                }
             }
         }
     }
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Dune)
-    ) {
-        Log.e("COLORCUR", uiState.backgroundColor.value.toString())
-        BackgroundElement(color = uiState.backgroundColor)
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Dune)
+        ) {
+            Log.e("COLORCUR", uiState.backgroundColor.value.toString())
+            BackgroundElement(color = uiState.backgroundColor)
 
-        Column {
-            Image(
-                painter = painterResource(R.drawable.marvel),
-                contentDescription = null,
-                modifier = Modifier
-                    .scale(0.4f)
-                    .align(Alignment.CenterHorizontally)
-            )
-            Spacer(modifier = Modifier.width(32.dp))
-            Text(
-                text = stringResource(id = R.string.main_text),
-                modifier = Modifier.fillMaxWidth(),
-                textAlign = TextAlign.Center,
-                style = Typography.h4,
-                color = Color.White
-            )
-            Spacer(modifier = Modifier.height(32.dp))
-            RowHero(heros = uiState.listHero,
-                changeCurrentItem = {
-                    viewModel.sendEvent(
-                        SelectPersonUIEvent.OnCurrentIndexChange(it)
+            Column {
+                Image(
+                    painter = painterResource(R.drawable.marvel),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .scale(0.4f)
+                        .align(Alignment.CenterHorizontally)
+                )
+                Spacer(modifier = Modifier.width(32.dp))
+                Text(
+                    text = stringResource(id = R.string.main_text),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    style = Typography.h4,
+                    color = Color.White
+                )
+                if (uiState.getDataIsSuccessful) {
+                Spacer(modifier = Modifier.height(32.dp))
+                RowHero(heros = uiState.listHero,
+                    changeCurrentItem = {
+                        viewModel.sendEvent(
+                            SelectPersonUIEvent.OnCurrentIndexChange(it)
+                        )
+                    },
+                    onclick = {
+                        viewModel.sendEvent(SelectPersonUIEvent.OnclickHero(it))
+                    }
+                )
+            } else {
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.CenterStart
+                ) {
+                    Text(
+                        text = uiState.errorToLoadData,
+                        textAlign = TextAlign.Center,
+                        style = Typography.h4,
+                        color = Color.Red,
+                        modifier = Modifier.clickable { viewModel.sendEvent(SelectPersonUIEvent.OnOpenScreen) }
                     )
-                },
-                onclick = {
-                    viewModel.sendEvent(SelectPersonUIEvent.OnclickHero(it))
                 }
-            )
-
+            }
         }
     }
 }
+

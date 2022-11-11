@@ -19,5 +19,6 @@ sealed interface PersonScreenUIEvent {
 }
 
 sealed interface PersonScreenUIEffect {
-    object NavigateBack : PersonScreenUIEvent
+    object NavigateBack : PersonScreenUIEffect
+    class ErrorToLoadData(val error: String) : PersonScreenUIEffect
 }

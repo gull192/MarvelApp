@@ -8,11 +8,13 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import gruzdev.artem.marvelapp.core.model.HeroInfo
+import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
 import gruzdev.artem.marvelapp.screens.destinations.PersonScreenDestination
 import gruzdev.artem.marvelapp.screens.select_person_screen.SelectPersonUIEffect
 import gruzdev.artem.marvelapp.screens.select_person_screen.SelectPersonUIState
 import gruzdev.artem.marvelapp.screens.select_person_screen.SelectPersonViewModel
+import gruzdev.artem.marvelapp.screens.select_person_screen.model.HeroCard
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
@@ -33,7 +35,7 @@ class PersonScreenViewModel @AssistedInject constructor(
     private val _state = MutableStateFlow(PersonUIState.Empty)
     val state = _state.asStateFlow()
 
-    private val _effect = MutableSharedFlow<PersonScreenUIEvent>()
+    private val _effect = MutableSharedFlow<PersonScreenUIEffect>()
     val effect = _effect.asSharedFlow()
 
     fun sendEvent(event: PersonScreenUIEvent) {
@@ -58,8 +60,12 @@ class PersonScreenViewModel @AssistedInject constructor(
     }
 
     private suspend fun getDataAfterNav(id: Int) {
-        val hero = repository?.getHeroInfo(id)?.let {
-            updateView(it)
+        val hero : Resource<HeroInfo> = repository?.getHeroInfo(id)!!
+        when (hero) {
+            is Resource.Success ->
+                updateView(hero.data!!)
+            is Resource.Error ->
+                _effect.emit(PersonScreenUIEffect.ErrorToLoadData(hero.message!!))
         }
     }
 }

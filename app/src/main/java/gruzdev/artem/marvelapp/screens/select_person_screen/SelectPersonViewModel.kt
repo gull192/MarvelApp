@@ -9,9 +9,12 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import gruzdev.artem.marvelapp.R
+import gruzdev.artem.marvelapp.core.model.HeroInfo
 import gruzdev.artem.marvelapp.core.navigation.model.asHeroInfo
+import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepositoryImpl
+import gruzdev.artem.marvelapp.screens.persom_screen.PersonScreenUIEffect
 import gruzdev.artem.marvelapp.screens.select_person_screen.model.HeroCard
 import gruzdev.artem.marvelapp.ui.theme.*
 import kotlinx.coroutines.flow.*
@@ -126,15 +129,34 @@ class SelectPersonViewModel @AssistedInject constructor(
     private suspend fun navigateToHeroDetails(heroCard: HeroCard) {
         _effect.emit(SelectPersonUIEffect.NavigateToPersonScreen(heroCard.id))
     }
+
     private suspend fun loadData() {
-       repository?.getAllHeroes()?.let { newHeroes ->
-           _state.update {
-               it.copy(
-                   listHero = newHeroes,
-                   backgroundColor = newHeroes[0].color,
-                   currentIndex = 0
-               )
-           }
-       }
+        val hero : Resource<List<HeroCard>> = repository?.getAllHeroes()!!
+        when (hero) {
+            is Resource.Success ->
+                updateView(hero.data!!)
+            is Resource.Error ->
+                showError(hero.message!!)
+        }
+    }
+
+    private suspend fun updateView(heroCards: List<HeroCard>) {
+        _state.update {
+            it.copy(
+                listHero = heroCards,
+                backgroundColor = heroCards[0].color,
+                currentIndex = 0,
+                getDataIsSuccessful = true
+            )
+        }
+    }
+
+    private fun showError(error: String) {
+        _state.update {
+            it.copy(
+                getDataIsSuccessful = false,
+                errorToLoadData = error
+            )
+        }
     }
 }

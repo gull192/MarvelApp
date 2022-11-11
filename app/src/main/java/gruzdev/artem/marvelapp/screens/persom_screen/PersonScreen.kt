@@ -4,6 +4,7 @@ import android.app.Activity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -15,6 +16,7 @@ import gruzdev.artem.marvelapp.screens.persom_screen.components.BackButton
 import gruzdev.artem.marvelapp.screens.persom_screen.components.BackgroundImage
 import gruzdev.artem.marvelapp.core.model.HeroInfo
 import gruzdev.artem.marvelapp.core.rememberStateWithLifecycle
+import gruzdev.artem.marvelapp.core.showToast
 import gruzdev.artem.marvelapp.core.ui.di.daggerSavedStateViewModel
 import gruzdev.artem.marvelapp.screens.persom_screen.di.personScreenComponent
 import gruzdev.artem.marvelapp.ui.theme.Typography
@@ -39,6 +41,18 @@ private fun PersonScreen(
     onBack: () -> Unit
 ) {
     val uiState by rememberStateWithLifecycle(viewModel.state)
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+
+        viewModel.effect.collect { effect ->
+            when (effect) {
+                is PersonScreenUIEffect.ErrorToLoadData -> {
+                    showToast(context, effect.error)
+                }
+            }
+        }
+    }
+
     Box(modifier = Modifier.fillMaxSize()) {
         BackgroundImage(url = uiState.url)
         Column(modifier = Modifier.fillMaxSize(), verticalArrangement = Arrangement.SpaceBetween) {
