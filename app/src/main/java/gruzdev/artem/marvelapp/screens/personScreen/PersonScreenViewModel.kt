@@ -1,6 +1,5 @@
-package gruzdev.artem.marvelapp.screens.persom_screen
+package gruzdev.artem.marvelapp.screens.personScreen
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,14 +9,11 @@ import dagger.assisted.AssistedInject
 import gruzdev.artem.marvelapp.core.model.HeroInfo
 import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
-import gruzdev.artem.marvelapp.screens.destinations.PersonScreenDestination
-import gruzdev.artem.marvelapp.screens.select_person_screen.SelectPersonUIEffect
-import gruzdev.artem.marvelapp.screens.select_person_screen.SelectPersonUIState
-import gruzdev.artem.marvelapp.screens.select_person_screen.SelectPersonViewModel
-import gruzdev.artem.marvelapp.screens.select_person_screen.model.HeroCard
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -40,11 +36,11 @@ class PersonScreenViewModel @AssistedInject constructor(
 
     fun sendEvent(event: PersonScreenUIEvent) {
         when(event) {
-            is PersonScreenUIEvent.OnGetData ->{
+            is PersonScreenUIEvent.OnGetData ->
                 viewModelScope.launch {
                     getDataAfterNav(event.characterId)
                 }
-            }
+
             PersonScreenUIEvent.OnOpenWithArg -> TODO()
         }
     }

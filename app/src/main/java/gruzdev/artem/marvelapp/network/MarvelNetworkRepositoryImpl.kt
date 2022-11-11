@@ -9,7 +9,7 @@ import gruzdev.artem.marvelapp.core.repositore.network.BaseRepo
 import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.network.model.MarvelAPI
 import gruzdev.artem.marvelapp.network.model.Result
-import gruzdev.artem.marvelapp.screens.select_person_screen.model.HeroCard
+import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import kotlin.random.Random
 
 class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface) :
@@ -30,8 +30,7 @@ class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface)
                 color = Color(rand.nextLong(0xFFFFFFFF)) // пока будет случайный цвет, потом придумаую
             )
         }
-        return if (data == null) Resource.Error(error!!)
-               else Resource.Success(data)
+        return if (data == null) Resource.Error(error!!) else Resource.Success(data)
     }
 
     override suspend fun getHeroInfo(characterId: Int): Resource<HeroInfo> {

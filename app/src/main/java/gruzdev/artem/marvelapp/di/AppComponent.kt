@@ -11,9 +11,8 @@ import gruzdev.artem.marvelapp.core.di.CommonDependencies
 import gruzdev.artem.marvelapp.core.di.scope.AppScope
 import gruzdev.artem.marvelapp.main.di.DrawerModule
 import gruzdev.artem.marvelapp.main.di.MainComponentDependencies
-import gruzdev.artem.marvelapp.network.di.RetrofitModule
-import gruzdev.artem.marvelapp.screens.persom_screen.di.PersonScreenDependencies
-import gruzdev.artem.marvelapp.screens.select_person_screen.di.SelectPersonDependencies
+import gruzdev.artem.marvelapp.screens.personScreen.di.PersonScreenDependencies
+import gruzdev.artem.marvelapp.screens.selectPersonScreen.di.SelectPersonDependencies
 
 @AppScope
 @Component(

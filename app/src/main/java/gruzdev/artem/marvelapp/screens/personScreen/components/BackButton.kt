@@ -1,4 +1,4 @@
-package gruzdev.artem.marvelapp.screens.persom_screen.components
+package gruzdev.artem.marvelapp.screens.personScreen.components
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun BackButton(modifier: Modifier = Modifier, onClick: () -> Unit) {
+fun BackButton( onClick: () -> Unit, modifier: Modifier = Modifier) {
     IconButton(onClick = onClick, modifier = modifier) {
         Icon(
             imageVector = Icons.Default.ArrowBack,

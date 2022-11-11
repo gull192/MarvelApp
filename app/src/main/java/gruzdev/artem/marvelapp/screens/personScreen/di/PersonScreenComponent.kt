@@ -1,4 +1,4 @@
-package gruzdev.artem.marvelapp.screens.persom_screen.di
+package gruzdev.artem.marvelapp.screens.personScreen.di
 
 import android.app.Activity
 import gruzdev.artem.marvelapp.core.di.featureComponent
@@ -7,9 +7,8 @@ import gruzdev.artem.marvelapp.core.di.scope.FeatureScope
 import dagger.Component
 import gruzdev.artem.marvelapp.core.di.findComponentDependencies
 import gruzdev.artem.marvelapp.network.di.RetrofitModule
-import gruzdev.artem.marvelapp.screens.persom_screen.PersonScreenViewModel
-import gruzdev.artem.marvelapp.screens.select_person_screen.di.module.SelectPersonViewModelModule
-
+import gruzdev.artem.marvelapp.screens.personScreen.PersonScreenViewModel
+import gruzdev.artem.marvelapp.screens.selectPersonScreen.di.module.SelectPersonViewModelModule
 
 internal val personScreenComponent = featureComponent<PersonScreenComponent, Activity> { activity ->
     DaggerPersonScreenComponent.factory().create(activity.findComponentDependencies())

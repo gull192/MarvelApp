@@ -7,7 +7,5 @@ import gruzdev.artem.marvelapp.screens.NavGraphs
 
 @Composable
 fun AppHost() {
-    val navController = rememberNavController()
     DestinationsNavHost(navGraph = NavGraphs.root)
-//    navController.navigate(SelectPersonScreenDestination)
 }

@@ -1,10 +1,8 @@
-package gruzdev.artem.marvelapp.screens.select_person_screen
+package gruzdev.artem.marvelapp.screens.selectPersonScreen
 
 import androidx.compose.runtime.Immutable
 import androidx.compose.ui.graphics.Color
-import gruzdev.artem.marvelapp.core.model.HeroInfo
-import gruzdev.artem.marvelapp.screens.persom_screen.PersonScreenUIEffect
-import gruzdev.artem.marvelapp.screens.select_person_screen.model.HeroCard
+import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import gruzdev.artem.marvelapp.ui.theme.Dune
 
 @Immutable
@@ -22,14 +20,14 @@ data class SelectPersonUIState(
 
 @Immutable
 sealed interface SelectPersonUIEvent {
-    class OnCurrentIndexChange(val newIndex: Int): SelectPersonUIEvent
-    class OnclickHero(val heroCard: HeroCard): SelectPersonUIEvent
+    data class OnCurrentIndexChange(val newIndex: Int): SelectPersonUIEvent
+    data class OnclickHero(val heroCard: HeroCard): SelectPersonUIEvent
     object OnOpenScreen : SelectPersonUIEvent
 }
 
 @Immutable
 sealed interface SelectPersonUIEffect {
-    class NavigateToPersonScreen(val characterId: Int) : SelectPersonUIEffect
-    class ErrorToLoadData(val error: String) : SelectPersonUIEffect
+    data class NavigateToPersonScreen(val characterId: Int) : SelectPersonUIEffect
+    data class ErrorToLoadData(val error: String) : SelectPersonUIEffect
 }
 

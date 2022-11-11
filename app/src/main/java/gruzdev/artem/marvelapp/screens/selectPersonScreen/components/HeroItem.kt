@@ -1,6 +1,8 @@
-package gruzdev.artem.marvelapp.screens.select_person_screen.components
+package gruzdev.artem.marvelapp.screens.selectPersonScreen.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -11,7 +13,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import gruzdev.artem.marvelapp.screens.select_person_screen.model.HeroCard
+import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import gruzdev.artem.marvelapp.ui.theme.Typography
 
 @Composable
@@ -24,7 +26,7 @@ fun HeroItem (heroCard: HeroCard, modifier: Modifier = Modifier) {
                 .build(),
             contentDescription = null,
             contentScale = ContentScale.Crop,
-            modifier = modifier.fillMaxSize()
+            modifier = Modifier.fillMaxSize()
         )
         Text(
             text = heroCard.title,

@@ -1,4 +1,4 @@
-package gruzdev.artem.marvelapp.screens.persom_screen.di.module
+package gruzdev.artem.marvelapp.screens.personScreen.di.module
 
 
 import androidx.lifecycle.ViewModel

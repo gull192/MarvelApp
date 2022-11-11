@@ -9,8 +9,7 @@ import retrofit2.HttpException
 import retrofit2.Response
 import java.io.IOException
 
-
-abstract class BaseRepo() {
+abstract class BaseRepo {
     // we'll use this function in all
     // repos to handle api errors.
     suspend fun <T> safeApiCall(apiToBeCalled: suspend () -> Response<T>): Resource<T> {
@@ -64,7 +63,7 @@ abstract class BaseRepo() {
                 moshiAdapter.fromJson(it)
             }
         } catch (exception: Exception) {
-            null
+            throw exception
         }
     }
 }

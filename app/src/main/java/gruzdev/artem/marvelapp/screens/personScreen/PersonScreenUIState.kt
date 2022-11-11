@@ -1,6 +1,4 @@
-package gruzdev.artem.marvelapp.screens.persom_screen
-
-import gruzdev.artem.marvelapp.core.model.HeroInfo
+package gruzdev.artem.marvelapp.screens.personScreen
 
 data class PersonUIState (
     val url: String = "",
@@ -14,11 +12,11 @@ data class PersonUIState (
 
 sealed interface PersonScreenUIEvent {
     object OnBackClick : PersonScreenUIEvent
-    class OnGetData (val characterId: Int) : PersonScreenUIEvent
+    data class OnGetData (val characterId: Int) : PersonScreenUIEvent
     object OnOpenWithArg : PersonScreenUIEvent
 }
 
 sealed interface PersonScreenUIEffect {
     object NavigateBack : PersonScreenUIEffect
-    class ErrorToLoadData(val error: String) : PersonScreenUIEffect
+    data class ErrorToLoadData(val error: String) : PersonScreenUIEffect
 }

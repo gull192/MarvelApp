@@ -1,15 +1,10 @@
-package gruzdev.artem.marvelapp.screens.select_person_screen.di.module
-
+package gruzdev.artem.marvelapp.screens.selectPersonScreen.di.module
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import dagger.Binds
 import gruzdev.artem.marvelapp.core.di.viewmodel.DaggerViewModelFactory
 import dagger.Module
 import dagger.Provides
-import dagger.multibindings.IntoMap
-import gruzdev.artem.marvelapp.core.di.viewmodel.ViewModelKey
-import gruzdev.artem.marvelapp.screens.select_person_screen.SelectPersonViewModel
 import javax.inject.Provider
 
 @Module

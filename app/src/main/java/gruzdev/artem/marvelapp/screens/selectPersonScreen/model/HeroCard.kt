@@ -1,6 +1,5 @@
-package gruzdev.artem.marvelapp.screens.select_person_screen.model
+package gruzdev.artem.marvelapp.screens.selectPersonScreen.model
 
-import android.provider.ContactsContract.DisplayPhoto
 import androidx.compose.ui.graphics.Color
 
 data class HeroCard(

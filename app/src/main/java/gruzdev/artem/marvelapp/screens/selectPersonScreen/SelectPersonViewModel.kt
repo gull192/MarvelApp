@@ -1,23 +1,20 @@
-package gruzdev.artem.marvelapp.screens.select_person_screen
+package gruzdev.artem.marvelapp.screens.selectPersonScreen
 
 import android.util.Log
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
-import gruzdev.artem.marvelapp.R
-import gruzdev.artem.marvelapp.core.model.HeroInfo
-import gruzdev.artem.marvelapp.core.navigation.model.asHeroInfo
 import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
-import gruzdev.artem.marvelapp.network.MarvelNetworkRepositoryImpl
-import gruzdev.artem.marvelapp.screens.persom_screen.PersonScreenUIEffect
-import gruzdev.artem.marvelapp.screens.select_person_screen.model.HeroCard
-import gruzdev.artem.marvelapp.ui.theme.*
-import kotlinx.coroutines.flow.*
+import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
