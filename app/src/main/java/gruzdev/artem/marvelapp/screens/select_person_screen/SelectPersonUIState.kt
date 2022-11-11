@@ -18,13 +18,14 @@ data class SelectPersonUIState(
 }
 
 @Immutable
-sealed class SelectPersonUIEvent {
-    class OnCurrentIndexChange(val newIndex: Int): SelectPersonUIEvent()
-    class OnclickHero(val heroCard: HeroCard): SelectPersonUIEvent()
+sealed interface SelectPersonUIEvent {
+    class OnCurrentIndexChange(val newIndex: Int): SelectPersonUIEvent
+    class OnclickHero(val heroCard: HeroCard): SelectPersonUIEvent
+    object OnOpenScreen : SelectPersonUIEvent
 }
 
 @Immutable
-sealed class SelectPersonUIEffect {
-    class NavigateToPersonScreen(val heroInfo: HeroInfo) : SelectPersonUIEffect()
+sealed interface SelectPersonUIEffect {
+    class NavigateToPersonScreen(val characterId: Int) : SelectPersonUIEffect
 }
 
