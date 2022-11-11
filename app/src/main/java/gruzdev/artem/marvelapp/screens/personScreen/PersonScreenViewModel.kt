@@ -1,15 +1,14 @@
-package gruzdev.artem.marvelapp.screens.persom_screen
+package gruzdev.artem.marvelapp.screens.personScreen
 
-import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import gruzdev.artem.marvelapp.core.model.HeroInfo
-import gruzdev.artem.marvelapp.screens.destinations.PersonScreenDestination
-import gruzdev.artem.marvelapp.screens.select_person_screen.SelectPersonUIEffect
-import gruzdev.artem.marvelapp.screens.select_person_screen.SelectPersonUIState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class PersonScreenViewModel : ViewModel(){
@@ -22,15 +21,14 @@ class PersonScreenViewModel : ViewModel(){
 
     fun sendEvent(event: PersonScreenUIEvent) {
         when(event) {
-            is PersonScreenUIEvent.OnGetData ->{
+            is PersonScreenUIEvent.OnGetData ->
                 CoroutineScope(Dispatchers.Default).launch {
                     loadData(event.heroInfo)
                 }
-            }
         }
     }
 
-    suspend fun loadData(heroInfo: HeroInfo) {
+    private suspend fun loadData(heroInfo: HeroInfo) {
         _state.update {
             it.copy(
                 description = heroInfo.descriptionHero,

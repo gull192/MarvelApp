@@ -1,8 +1,14 @@
-package gruzdev.artem.marvelapp.screens.select_person_screen
+package gruzdev.artem.marvelapp.screens.selectPersonScreen
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -21,8 +27,8 @@ import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import gruzdev.artem.marvelapp.R
 import gruzdev.artem.marvelapp.core.rememberStateWithLifecycle
 import gruzdev.artem.marvelapp.screens.destinations.PersonScreenDestination
-import gruzdev.artem.marvelapp.screens.select_person_screen.components.BackgroundElement
-import gruzdev.artem.marvelapp.screens.select_person_screen.components.RowHero
+import gruzdev.artem.marvelapp.screens.selectPersonScreen.components.BackgroundElement
+import gruzdev.artem.marvelapp.screens.selectPersonScreen.components.RowHero
 import gruzdev.artem.marvelapp.ui.theme.Dune
 import gruzdev.artem.marvelapp.ui.theme.Typography
 
@@ -45,9 +51,9 @@ private fun SelectPersonScreen(
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
-                is SelectPersonUIEffect.NavigateToPersonScreen -> {
+                is SelectPersonUIEffect.NavigateToPersonScreen ->
                     navController.navigate(PersonScreenDestination(effect.heroInfo))
-                }
+
                 else -> {}
             }
         }
@@ -79,7 +85,7 @@ private fun SelectPersonScreen(
             )
             Spacer(modifier = Modifier.height(32.dp))
             RowHero(heros = uiState.listHero,
-                changeCurrentItem = {
+                onValueChange = {
                     viewModel.sendEvent(
                         SelectPersonUIEvent.OnCurrentIndexChange(it)
                     )

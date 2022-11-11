@@ -1,4 +1,4 @@
-package gruzdev.artem.marvelapp.screens.persom_screen
+package gruzdev.artem.marvelapp.screens.personScreen
 
 import gruzdev.artem.marvelapp.core.model.HeroInfo
 
@@ -14,7 +14,7 @@ data class PersonUIState (
 
 sealed interface PersonScreenUIEvent {
     object OnBackClick : PersonScreenUIEvent
-    class OnGetData (val heroInfo: HeroInfo) : PersonScreenUIEvent
+    data class OnGetData (val heroInfo: HeroInfo) : PersonScreenUIEvent
 }
 
 sealed interface PersonScreenUIEffect {

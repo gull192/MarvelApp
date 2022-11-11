@@ -1,8 +1,6 @@
-package gruzdev.artem.marvelapp.screens.persom_screen.components
+package gruzdev.artem.marvelapp.screens.personScreen.components
 
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
