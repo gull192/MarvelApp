@@ -36,6 +36,9 @@ android {
         def privateKeyMarvel = "c419742b730333e5dd55b1f532c2b2aec7f1a33d"
         buildConfigField("String", "PRIVATE_KEY_MARVEL", "\"${privateKeyMarvel}\"")
 
+        def baseUrlForMarvelAPI = "http://gateway.marvel.com"
+        buildConfigField("String", "BASE_URL_FOR_MARVEL_API", "\"${baseUrlForMarvelAPI}\"")
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -97,7 +100,6 @@ dependencies {
     implementation("com.google.dagger:hilt-android:$dagger_version")
     kapt("com.google.dagger:hilt-android-compiler:$dagger_version")
     implementation ("androidx.hilt:hilt-navigation-compose:$compose_hilt_navigation_version")
-//    implementation("androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03")
 
     // room
     def room_version = "2.5.0-alpha02"

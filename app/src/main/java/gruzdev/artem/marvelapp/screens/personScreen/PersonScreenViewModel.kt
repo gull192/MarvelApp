@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gruzdev.artem.marvelapp.core.model.HeroInfo
+import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.dataManager.DataManager
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -46,8 +47,12 @@ class PersonScreenViewModel @Inject constructor(
     }
 
     private suspend fun getDataAfterNav(id: Int) {
-        val hero : HeroInfo = dataManager?.getHero(id)!!
-        updateView(hero)
+        when (val hero : Resource<HeroInfo> = dataManager.getHero(id)) {
+            is Resource.Success ->
+                updateView(hero.data!!)
+            is Resource.Error ->
+                _effect.emit(PersonScreenUIEffect.ErrorToLoadData(hero.message!!))
+        }
     }
 }
 

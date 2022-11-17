@@ -63,8 +63,12 @@ class SelectPersonViewModel @Inject constructor(
     }
 
     private suspend fun loadData() {
-        val hero : List<HeroCard> = dataManager?.getAll()!!
-        updateView(hero)
+        when (val hero : Resource<List<HeroCard>> = dataManager.getAll()) {
+            is Resource.Success ->
+                updateView(hero.data!!)
+            is Resource.Error ->
+                showError(hero.message!!)
+        }
     }
 
     private suspend fun updateView(heroCards: List<HeroCard>) {

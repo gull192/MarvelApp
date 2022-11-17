@@ -12,11 +12,11 @@ interface HeroDao {
     suspend fun getAllHero() : List<HeroInfoDb>
 
     @Query("SELECT * FROM hero WHERE id = :id")
-    suspend fun getHero(id: Int) : HeroInfoDb
+    suspend fun getHero(id: Int) : HeroInfoDb?
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(heroes: List<HeroInfoDb>)
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertOne(hero: HeroInfoDb)
 }

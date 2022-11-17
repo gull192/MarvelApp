@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import gruzdev.artem.marvelapp.BuildConfig.BASE_URL_FOR_MARVEL_API
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepositoryImpl
 import gruzdev.artem.marvelapp.network.QuestInterface
@@ -38,7 +39,7 @@ class RetrofitModule {
     @Provides
     fun marvelRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
-            .baseUrl("http://gateway.marvel.com")
+            .baseUrl(BASE_URL_FOR_MARVEL_API)
             .client(okHttpClient)
             .addConverterFactory(MoshiConverterFactory.create())
             .build()

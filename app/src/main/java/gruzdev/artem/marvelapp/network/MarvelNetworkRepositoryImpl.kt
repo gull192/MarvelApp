@@ -3,7 +3,6 @@ package gruzdev.artem.marvelapp.network
 import androidx.compose.ui.graphics.Color
 import gruzdev.artem.marvelapp.BuildConfig.PRIVATE_KEY_MARVEL
 import gruzdev.artem.marvelapp.core.Hashing
-import gruzdev.artem.marvelapp.core.model.HeroInfo
 import gruzdev.artem.marvelapp.BuildConfig.PUBLIC_KEY_MARVEL
 import gruzdev.artem.marvelapp.core.repositore.network.BaseRepo
 import gruzdev.artem.marvelapp.core.repositore.network.Resource
@@ -20,14 +19,14 @@ class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface)
         val response: Resource<MarvelAPI> = safeApiCall { quest.getAllHeroes(hash = hash) }
         val res: List<Result>? = response.data?.data?.results
         val error = response?.message
-        val rand = Random(1828281)
+        val rand = Random(System.currentTimeMillis())
         val data =  res?.map {
             HeroCard(
                 id = it.id,
                 title = it.name,
                 descriptionHero = it.description,
                 photoURL = "${it.thumbnail.path}.${it.thumbnail.extension}",
-                color = Color(rand.nextLong(0xFFFFFFFF)) // пока будет случайный цвет, потом придумаую
+                color = Color(rand.nextLong(0xFFFFFFFF)) // max value for color
             )
         }
         return if (data == null) Resource.Error(error!!) else Resource.Success(data)
@@ -35,7 +34,7 @@ class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface)
 
     override suspend fun getHeroInfo(characterId: Int): Resource<HeroCard> {
         val hash = Hashing.md5("${1}${PRIVATE_KEY_MARVEL}${PUBLIC_KEY_MARVEL}")
-        val rand = Random(1828281)
+        val rand = Random(System.currentTimeMillis())
         val response: Resource<MarvelAPI> =
             safeApiCall { quest.getHeroInfo(hash = hash, characterId = characterId) }
         val res: List<Result>? =
@@ -46,7 +45,7 @@ class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface)
                 title = it.name,
                 photoURL = "${it.thumbnail.path}.${it.thumbnail.extension}",
                 descriptionHero = it.description,
-                color =  Color(rand.nextLong(0xFFFFFFFF))
+                color =  Color(rand.nextLong(0xFFFFFFFF))  // max value for color
             )
         }
         val error = response.message
