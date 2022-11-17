@@ -1,16 +1,10 @@
 package gruzdev.artem.marvelapp.screens.personScreen
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import gruzdev.artem.marvelapp.core.model.HeroInfo
-import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.dataManager.DataManager
-import gruzdev.artem.marvelapp.localSave.HeroDao
-import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -19,17 +13,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class PersonScreenViewModel @AssistedInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
+@HiltViewModel
+class PersonScreenViewModel @Inject constructor(
+    private val dataManager: DataManager
 ) : ViewModel(){
-
-    @AssistedFactory
-    interface Factory {
-        fun create(savedStateHandle: SavedStateHandle): PersonScreenViewModel
-    }
-
-    private var dataManager: DataManager? = null
-        @Inject set
 
     private val _state = MutableStateFlow(PersonUIState.Empty)
     val state = _state.asStateFlow()

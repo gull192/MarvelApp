@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
+import dagger.hilt.android.lifecycle.HiltViewModel
 import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.dataManager.DataManager
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
@@ -19,17 +20,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class SelectPersonViewModel @AssistedInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle,
+@HiltViewModel
+class SelectPersonViewModel @Inject constructor(
+    private val dataManager: DataManager
 ) : ViewModel() {
-
-    @AssistedFactory
-    interface Factory {
-        fun create(savedStateHandle: SavedStateHandle): SelectPersonViewModel
-    }
-
-    private var dataManager: DataManager? = null
-        @Inject set
 
     private val _state = MutableStateFlow(SelectPersonUIState.Empty)
     val state = _state.asStateFlow()
@@ -77,8 +71,7 @@ class SelectPersonViewModel @AssistedInject constructor(
         _state.update {
             it.copy(
                 listHero = heroCards,
-                backgroundColor = heroCards[0].color,
-                currentIndex = 0,
+                backgroundColor = heroCards[it.currentIndex].color,
                 getDataIsSuccessful = true
             )
         }

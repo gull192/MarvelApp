@@ -1,6 +1,5 @@
 package gruzdev.artem.marvelapp.screens.selectPersonScreen
 
-import android.app.Activity
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -25,16 +24,16 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
 import gruzdev.artem.marvelapp.R
 import gruzdev.artem.marvelapp.core.rememberStateWithLifecycle
 import gruzdev.artem.marvelapp.core.showToast
-import gruzdev.artem.marvelapp.core.ui.di.daggerSavedStateViewModel
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.components.BackgroundElement
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.components.RowHero
-import gruzdev.artem.marvelapp.screens.selectPersonScreen.di.selectPersonComponent
 import gruzdev.artem.marvelapp.ui.theme.Dune
 import gruzdev.artem.marvelapp.ui.theme.Typography
 
@@ -42,10 +41,7 @@ import gruzdev.artem.marvelapp.ui.theme.Typography
 @Destination
 @Composable
 fun SelectPersonScreen(navigator: DestinationsNavigator) {
-    val activity = LocalContext.current as Activity
-    val viewModel =  daggerSavedStateViewModel {
-        selectPersonComponent.getInstance(activity).selectPersonViewModelFactory.create(it)
-    }
+    val viewModel: SelectPersonViewModel = hiltViewModel()
     viewModel.sendEvent(SelectPersonUIEvent.OnOpenScreen)
     SelectPersonScreen(
         viewModel = viewModel,
