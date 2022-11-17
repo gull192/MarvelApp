@@ -6,6 +6,7 @@ import gruzdev.artem.marvelapp.core.di.findComponentDependencies
 import gruzdev.artem.marvelapp.core.di.modules.ViewModelModule
 import gruzdev.artem.marvelapp.core.di.scope.FeatureScope
 import dagger.Component
+import gruzdev.artem.marvelapp.dataManager.DataManager
 import gruzdev.artem.marvelapp.network.di.RetrofitModule
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.SelectPersonViewModel
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.di.module.SelectPersonViewModelModule
@@ -16,7 +17,7 @@ internal val selectPersonComponent = featureComponent<SelectPersonComponent, Act
 
 @FeatureScope
 @Component(
-    modules = [ViewModelModule::class, SelectPersonViewModelModule::class, RetrofitModule::class],
+    modules = [ViewModelModule::class, SelectPersonViewModelModule::class],
     dependencies = [SelectPersonDependencies::class]
 )
 internal interface SelectPersonComponent {

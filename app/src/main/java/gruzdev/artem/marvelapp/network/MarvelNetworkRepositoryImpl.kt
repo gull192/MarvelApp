@@ -33,22 +33,23 @@ class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface)
         return if (data == null) Resource.Error(error!!) else Resource.Success(data)
     }
 
-    override suspend fun getHeroInfo(characterId: Int): Resource<HeroInfo> {
+    override suspend fun getHeroInfo(characterId: Int): Resource<HeroCard> {
         val hash = Hashing.md5("${1}${PRIVATE_KEY_MARVEL}${PUBLIC_KEY_MARVEL}")
+        val rand = Random(1828281)
         val response: Resource<MarvelAPI> =
             safeApiCall { quest.getHeroInfo(hash = hash, characterId = characterId) }
         val res: List<Result>? =
             response.data?.data?.results
         val data = res?.get(0)?.let {
-            HeroInfo(
+            HeroCard(
                 id = it.id,
-                heroName = it.name,
-                photoUrl = "${it.thumbnail.path}.${it.thumbnail.extension}",
-                descriptionHero = it.description
+                title = it.name,
+                photoURL = "${it.thumbnail.path}.${it.thumbnail.extension}",
+                descriptionHero = it.description,
+                color =  Color(rand.nextLong(0xFFFFFFFF))
             )
         }
         val error = response.message
-        return if (data == null) Resource.Error(error!!)
-        else Resource.Success(data)
+        return if (data == null) Resource.Error(error!!) else Resource.Success(data)
     }
 }

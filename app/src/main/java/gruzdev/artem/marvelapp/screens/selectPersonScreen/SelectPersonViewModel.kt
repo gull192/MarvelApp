@@ -8,6 +8,7 @@ import dagger.assisted.Assisted
 import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import gruzdev.artem.marvelapp.core.repositore.network.Resource
+import gruzdev.artem.marvelapp.dataManager.DataManager
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -26,7 +27,8 @@ class SelectPersonViewModel @AssistedInject constructor(
     interface Factory {
         fun create(savedStateHandle: SavedStateHandle): SelectPersonViewModel
     }
-    var  repository: MarvelNetworkRepository? = null
+
+    private var dataManager: DataManager? = null
         @Inject set
 
     private val _state = MutableStateFlow(SelectPersonUIState.Empty)
@@ -34,67 +36,6 @@ class SelectPersonViewModel @AssistedInject constructor(
 
     private val _effect = MutableSharedFlow<SelectPersonUIEffect>()
     val effect = _effect.asSharedFlow()
-
-    init {
-//        Log.e("INIT", "init view model")
-//        _state.update {
-//            it.copy(
-//                listHero = listOf(
-//                    HeroCard(
-//                        id = 0,
-//                        image = R.drawable.halk_sample,
-//                        title = "Halk",
-//                        color = Color.Black,
-//                        photoURL = "https://upload.wikimedia.org/wikipedia/ru/c/cc/Hulk_Marvel.jpg",
-//                        descriptionHero = "Im halk"
-//                    ),
-//                    HeroCard(
-//                        id = 0,
-//                        image = R.drawable.iron_man,
-//                        title = "Iron man",
-//                        color = Purple500,
-//                        photoURL = "https://kartinkin.net/uploads/posts/2021-07/1625622278_6-kartinkin-com-p-zheleznii-chelovek-art-art-krasivo-6.jpg",
-//                        descriptionHero = " Im iron man"
-//                    ),
-//                    HeroCard(
-//                        id = 0,
-//                        image = R.drawable.doctor_strange,
-//                        title = "Doctor strange",
-//                        color = Purple700,
-//                        photoURL = "https://static.wikia.nocookie.net/marvelcinematicuniverse/images/b/bd/Defender_Strange_Infobox.webp/revision/latest?cb=20220104021959&path-prefix=ru",
-//                        descriptionHero = "Im doctor strange"
-//                    ),
-//                    HeroCard(
-//                        id = 0,
-//                        image = R.drawable.spider_man,
-//                        title = "Spider_man",
-//                        color = Teal200,
-//                        photoURL = "https://upload.wikimedia.org/wikipedia/ru/thumb/c/cb/AmazingSpiderMan50.jpg/231px-AmazingSpiderMan50.jpg",
-//                        descriptionHero = "Im spider man"
-//                    ),
-//                    HeroCard(
-//                        id = 0,
-//                        image = R.drawable.capitain_america,
-//                        title = "Captain america",
-//                        color = Purple200,
-//                        photoURL = "https://upload.wikimedia.org/wikipedia/ru/thumb/6/6b/Chris_Evans_as_Steve_Rogers_Captain_America.jpg/640px-Chris_Evans_as_Steve_Rogers_Captain_America.jpg",
-//                        descriptionHero = "Im capitan americ"
-//                    ),
-//                    HeroCard(
-//                        id = 0,
-//                        image = R.drawable.deadpoll,
-//                        title = "Deadpoll",
-//                        color = Purple200,
-//                        photoURL = "https://www.mirf.ru/wp-content/uploads/2016/02/deadpool_121-e1454924608869.jpg",
-//                        descriptionHero = "Im deadpoll"
-//                    ),
-//                )
-//            )
-//        }
-//        _state.update {
-//            it.copy(backgroundColor = state.value.listHero[0].color)
-//        }
-    }
 
     fun sendEvent(event: SelectPersonUIEvent) {
         when (event) {
@@ -128,13 +69,8 @@ class SelectPersonViewModel @AssistedInject constructor(
     }
 
     private suspend fun loadData() {
-        val hero : Resource<List<HeroCard>> = repository?.getAllHeroes()!!
-        when (hero) {
-            is Resource.Success ->
-                updateView(hero.data!!)
-            is Resource.Error ->
-                showError(hero.message!!)
-        }
+        val hero : List<HeroCard> = dataManager?.getAll()!!
+        updateView(hero)
     }
 
     private suspend fun updateView(heroCards: List<HeroCard>) {

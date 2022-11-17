@@ -15,14 +15,14 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 @Module
 class RetrofitModule {
 
-    @FeatureScope
+    @AppScope
     @Provides
     fun httpLoggingInterceptor(): HttpLoggingInterceptor =
         HttpLoggingInterceptor().apply {
             this.level = HttpLoggingInterceptor.Level.BODY
         }
 
-    @FeatureScope
+    @AppScope
     @Provides
     fun httpClient(
         httpLoggingInterceptor: HttpLoggingInterceptor,
@@ -32,7 +32,7 @@ class RetrofitModule {
             .build()
 
 
-    @FeatureScope
+    @AppScope
     @Provides
     fun marvelRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
@@ -42,17 +42,17 @@ class RetrofitModule {
             .build()
 
 
-    @FeatureScope
+    @AppScope
     @Provides
     fun provideQuestApi(retrofit: Retrofit): QuestInterface =
         retrofit.create(QuestInterface::class.java)
 
-    @FeatureScope
+    @AppScope
     @Provides
     fun provideMarvelRepoImpl(questInterface: QuestInterface) =
         MarvelNetworkRepositoryImpl(questInterface)
 
-    @FeatureScope
+    @AppScope
     @Provides
     fun provideMarvelRepo(marvelNetworkRepositoryImpl: MarvelNetworkRepositoryImpl) =
         marvelNetworkRepositoryImpl as MarvelNetworkRepository

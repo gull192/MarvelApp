@@ -16,7 +16,7 @@ internal val personScreenComponent = featureComponent<PersonScreenComponent, Act
 
 @FeatureScope
 @Component(
-    modules = [ViewModelModule::class, SelectPersonViewModelModule::class, RetrofitModule::class],
+    modules = [ViewModelModule::class, SelectPersonViewModelModule::class],
     dependencies = [PersonScreenDependencies::class]
 )
 internal interface PersonScreenComponent {

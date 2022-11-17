@@ -16,6 +16,7 @@ open class HeadlinesComposeApp : Application(), HasComponentDependencies {
         DaggerAppComponent.factory()
             .create(this)
             .inject(this)
+
     }
 
 }

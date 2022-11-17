@@ -8,6 +8,8 @@ import dagger.assisted.AssistedFactory
 import dagger.assisted.AssistedInject
 import gruzdev.artem.marvelapp.core.model.HeroInfo
 import gruzdev.artem.marvelapp.core.repositore.network.Resource
+import gruzdev.artem.marvelapp.dataManager.DataManager
+import gruzdev.artem.marvelapp.localSave.HeroDao
 import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,14 +20,15 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class PersonScreenViewModel @AssistedInject constructor(
-    @Assisted private val savedStateHandle: SavedStateHandle
+    @Assisted private val savedStateHandle: SavedStateHandle,
 ) : ViewModel(){
 
     @AssistedFactory
     interface Factory {
         fun create(savedStateHandle: SavedStateHandle): PersonScreenViewModel
     }
-    var repository: MarvelNetworkRepository? = null
+
+    private var dataManager: DataManager? = null
         @Inject set
 
     private val _state = MutableStateFlow(PersonUIState.Empty)
@@ -56,13 +59,8 @@ class PersonScreenViewModel @AssistedInject constructor(
     }
 
     private suspend fun getDataAfterNav(id: Int) {
-        val hero : Resource<HeroInfo> = repository?.getHeroInfo(id)!!
-        when (hero) {
-            is Resource.Success ->
-                updateView(hero.data!!)
-            is Resource.Error ->
-                _effect.emit(PersonScreenUIEffect.ErrorToLoadData(hero.message!!))
-        }
+        val hero : HeroInfo = dataManager?.getHero(id)!!
+        updateView(hero)
     }
 }
 
