@@ -52,7 +52,6 @@ private fun PersonScreen(
             when (effect) {
                 is PersonScreenUIEffect.ErrorToLoadData ->
                     showToast(context, effect.error)
-
             }
         }
     }
@@ -72,7 +71,7 @@ private fun PersonScreen(
                         .padding(start = 16.dp),
                     style = Typography.h3,
                     color = Color.White,
-                    )
+                )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = uiState.description,

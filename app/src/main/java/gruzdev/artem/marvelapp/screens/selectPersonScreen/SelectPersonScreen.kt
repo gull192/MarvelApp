@@ -73,31 +73,31 @@ private fun SelectPersonScreen(
         }
     }
 
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Dune)
-        ) {
-            Log.e("COLORCUR", uiState.backgroundColor.value.toString())
-            BackgroundElement(color = uiState.backgroundColor)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Dune)
+    ) {
+        Log.e("COLORCUR", uiState.backgroundColor.value.toString())
+        BackgroundElement(color = uiState.backgroundColor)
 
-            Column {
-                Image(
-                    painter = painterResource(R.drawable.marvel),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .scale(0.4f)
-                        .align(Alignment.CenterHorizontally)
-                )
-                Spacer(modifier = Modifier.width(32.dp))
-                Text(
-                    text = stringResource(id = R.string.main_text),
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center,
-                    style = Typography.h4,
-                    color = Color.White
-                )
-                if (uiState.getDataIsSuccessful) {
+        Column {
+            Image(
+                painter = painterResource(R.drawable.marvel),
+                contentDescription = null,
+                modifier = Modifier
+                    .scale(0.4f)
+                    .align(Alignment.CenterHorizontally)
+            )
+            Spacer(modifier = Modifier.width(32.dp))
+            Text(
+                text = stringResource(id = R.string.main_text),
+                modifier = Modifier.fillMaxWidth(),
+                textAlign = TextAlign.Center,
+                style = Typography.h4,
+                color = Color.White
+            )
+            if (uiState.getDataIsSuccessful) {
                 Spacer(modifier = Modifier.height(32.dp))
                 RowHero(heros = uiState.listHero,
                     onValueChange = {
