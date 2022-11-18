@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">MarvelApp</string>
+    <string name="main_text">Choose your hero</string>
+</resources>

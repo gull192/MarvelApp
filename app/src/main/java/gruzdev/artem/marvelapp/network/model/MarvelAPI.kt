@@ -2,7 +2,6 @@ package gruzdev.artem.marvelapp.network.model
 
 import com.squareup.moshi.Json
 
-
 data class MarvelAPI(
     val attributionHTML: String,
     val attributionText: String,

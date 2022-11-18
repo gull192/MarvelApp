@@ -17,23 +17,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
+import dagger.hilt.android.AndroidEntryPoint
 import gruzdev.artem.marvelapp.screens.personScreen.components.BackButton
 import gruzdev.artem.marvelapp.screens.personScreen.components.BackgroundImage
 import gruzdev.artem.marvelapp.core.rememberStateWithLifecycle
 import gruzdev.artem.marvelapp.core.showToast
-import gruzdev.artem.marvelapp.core.ui.di.daggerSavedStateViewModel
-import gruzdev.artem.marvelapp.screens.personScreen.di.personScreenComponent
 import gruzdev.artem.marvelapp.ui.theme.Typography
 
 @Destination
 @Composable
 fun PersonScreen(navigator: DestinationsNavigator, characterId: Int) {
-    val activity = LocalContext.current as Activity
-    val viewModel =  daggerSavedStateViewModel {
-        personScreenComponent.getInstance(activity).personScreenViewModelFactory.create(it)
-    }
+    val viewModel: PersonScreenViewModel = hiltViewModel()
     viewModel.sendEvent(PersonScreenUIEvent.OnGetData(characterId))
     PersonScreen(
         viewModel = viewModel,
@@ -54,7 +52,6 @@ private fun PersonScreen(
             when (effect) {
                 is PersonScreenUIEffect.ErrorToLoadData ->
                     showToast(context, effect.error)
-
             }
         }
     }
@@ -74,7 +71,7 @@ private fun PersonScreen(
                         .padding(start = 16.dp),
                     style = Typography.h3,
                     color = Color.White,
-                    )
+                )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
                     text = uiState.description,
