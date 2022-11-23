@@ -1,4 +1,4 @@
-package gruzdev.artem.marvelapp.screens.selectPersonScreen.components
+package gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable

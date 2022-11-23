@@ -1,6 +1,6 @@
 @file:Suppress("OPT_IN_IS_NOT_ENABLED")
 
-package gruzdev.artem.marvelapp.screens.selectPersonScreen.components
+package gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components
 
 import android.util.Log
 import androidx.compose.animation.animateContentSize

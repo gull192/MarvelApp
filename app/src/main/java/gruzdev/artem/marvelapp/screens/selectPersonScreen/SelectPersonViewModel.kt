@@ -1,16 +1,10 @@
 package gruzdev.artem.marvelapp.screens.selectPersonScreen
 
-import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.dataManager.DataManager
-import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -25,11 +19,13 @@ class SelectPersonViewModel @Inject constructor(
     private val dataManager: DataManager
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(SelectPersonUIState.Empty)
+    private val _state = MutableStateFlow<SelectPersonUIState>(SelectPersonUIState.Loading)
     val state = _state.asStateFlow()
 
     private val _effect = MutableSharedFlow<SelectPersonUIEffect>()
     val effect = _effect.asSharedFlow()
+
+    private var needToLoadData = true
 
     fun sendEvent(event: SelectPersonUIEvent) {
         when (event) {
@@ -43,19 +39,26 @@ class SelectPersonViewModel @Inject constructor(
                     navigateToHeroDetails(event.heroCard)
                 }
             SelectPersonUIEvent.OnOpenScreen ->
-                viewModelScope.launch { loadData() }
+                viewModelScope.launch {
+                    if(needToLoadData) {
+                        loadData()
+                        needToLoadData = false
+                    }
+                }
         }
     }
 
     private fun changeCurrentItem(newIndex: Int) {
-        Log.e("TAF", newIndex.toString())
+        val oldState: SelectPersonUIState.DisplayHeroes =
+            _state.value as SelectPersonUIState.DisplayHeroes
         _state.update {
-            it.copy(currentIndex = newIndex)
+            oldState.copy(
+                currentIndex = newIndex
+            )
         }
         _state.update {
-            it.copy(backgroundColor = state.value.listHero[newIndex].color)
+            oldState.copy(backgroundColor = oldState.listHero[newIndex].color)
         }
-        Log.e("COLOR", _state.value.backgroundColor.toString())
     }
 
     private suspend fun navigateToHeroDetails(heroCard: HeroCard) {
@@ -63,30 +66,36 @@ class SelectPersonViewModel @Inject constructor(
     }
 
     private suspend fun loadData() {
-        when (val hero : Resource<List<HeroCard>> = dataManager.getAll()) {
+        _state.update {
+            SelectPersonUIState.Loading
+        }
+
+        when (val hero: Resource<List<HeroCard>> = dataManager.getAll()) {
             is Resource.Success ->
                 updateView(hero.data!!)
             is Resource.Error ->
-                showError(hero.message!!)
+                setError(hero.message!!)
         }
     }
 
-    private suspend fun updateView(heroCards: List<HeroCard>) {
+    private fun updateView(heroCards: List<HeroCard>) {
+
+        val oldState = if (_state.value is SelectPersonUIState.DisplayHeroes)
+            _state.value as SelectPersonUIState.DisplayHeroes
+        else SelectPersonUIState.DisplayHeroes()
+
         _state.update {
-            it.copy(
+            oldState.copy(
                 listHero = heroCards,
-                backgroundColor = heroCards[it.currentIndex].color,
+                backgroundColor = heroCards[oldState.currentIndex].color,
                 getDataIsSuccessful = true
             )
         }
     }
 
-    private fun showError(error: String) {
+    private fun setError(error: String) {
         _state.update {
-            it.copy(
-                getDataIsSuccessful = false,
-                errorToLoadData = error
-            )
+            SelectPersonUIState.Error(error)
         }
     }
 }

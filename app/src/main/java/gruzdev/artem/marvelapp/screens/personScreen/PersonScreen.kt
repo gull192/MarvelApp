@@ -47,7 +47,6 @@ private fun PersonScreen(
     val uiState by rememberStateWithLifecycle(viewModel.state)
     val context = LocalContext.current
     LaunchedEffect(Unit) {
-
         viewModel.effect.collect { effect ->
             when (effect) {
                 is PersonScreenUIEffect.ErrorToLoadData ->

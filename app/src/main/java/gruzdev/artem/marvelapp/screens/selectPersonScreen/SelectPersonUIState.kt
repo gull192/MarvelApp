@@ -6,22 +6,27 @@ import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import gruzdev.artem.marvelapp.ui.theme.Dune
 
 @Immutable
-data class SelectPersonUIState(
-    val backgroundColor: Color = Dune,
-    val listHero: List<HeroCard> = listOf(),
-    val currentIndex: Int = 0,
-    val getDataIsSuccessful: Boolean = false,
-    val errorToLoadData: String = ""
-) {
-    companion object {
-        val Empty = SelectPersonUIState()
+sealed class SelectPersonUIState {
+    data class DisplayHeroes(
+        val backgroundColor: Color = Dune,
+        val listHero: List<HeroCard> = listOf(),
+        val currentIndex: Int = 0,
+        val getDataIsSuccessful: Boolean = false,
+        val errorToLoadData: String = ""
+    ) : SelectPersonUIState() {
+        companion object {
+            val Empty = SelectPersonUIState.DisplayHeroes()
+        }
     }
+    data class Error(val error: String) : SelectPersonUIState()
+    object Loading : SelectPersonUIState()
 }
+
 
 @Immutable
 sealed interface SelectPersonUIEvent {
-    data class OnCurrentIndexChange(val newIndex: Int): SelectPersonUIEvent
-    data class OnclickHero(val heroCard: HeroCard): SelectPersonUIEvent
+    data class OnCurrentIndexChange(val newIndex: Int) : SelectPersonUIEvent
+    data class OnclickHero(val heroCard: HeroCard) : SelectPersonUIEvent
     object OnOpenScreen : SelectPersonUIEvent
 }
 
