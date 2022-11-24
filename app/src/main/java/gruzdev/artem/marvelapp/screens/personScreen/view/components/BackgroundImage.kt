@@ -1,4 +1,4 @@
-package gruzdev.artem.marvelapp.screens.personScreen.components
+package gruzdev.artem.marvelapp.screens.personScreen.view.components
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
