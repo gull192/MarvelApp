@@ -11,7 +11,9 @@ sealed class SelectPersonUIState {
         val backgroundColor: Color = Dune,
         val listHero: List<HeroCard> = listOf(),
         val currentIndex: Int = 0,
-        val getDataIsSuccessful: Boolean = false,
+        val currentOffset: Int = 0,
+        val isLoading: Boolean = false,
+        val endReached: Boolean = false,
         val errorToLoadData: String = ""
     ) : SelectPersonUIState() {
         companion object {
@@ -28,6 +30,7 @@ sealed interface SelectPersonUIEvent {
     data class OnCurrentIndexChange(val newIndex: Int) : SelectPersonUIEvent
     data class OnclickHero(val heroCard: HeroCard) : SelectPersonUIEvent
     object OnOpenScreen : SelectPersonUIEvent
+    object OnLoadPagingData : SelectPersonUIEvent
 }
 
 @Immutable

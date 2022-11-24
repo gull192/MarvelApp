@@ -8,6 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import gruzdev.artem.marvelapp.ui.theme.Dune
 import gruzdev.artem.marvelapp.ui.theme.Typography
 
@@ -22,7 +23,8 @@ fun ErrorScreen(error: String, modifier: Modifier = Modifier) {
             text = error,
             modifier = Modifier.align(Alignment.Center),
             color = Color.Red,
-            style = Typography.h4
+            style = Typography.h4,
+            textAlign = TextAlign.Center
         )
     }
 }

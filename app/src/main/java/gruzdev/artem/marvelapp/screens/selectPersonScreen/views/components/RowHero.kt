@@ -2,7 +2,6 @@
 
 package gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components
 
-import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,10 +31,17 @@ import kotlin.math.abs
 
 @OptIn(ExperimentalSnapperApi::class)
 @Composable
-fun RowHero(heros: List<HeroCard>, onValueChange: (Int) -> Unit, onclick: (HeroCard) -> Unit) {
+fun RowHero(
+    heroes: List<HeroCard>,
+    isLoading: Boolean,
+    endReached: Boolean,
+    onValueChange: (Int) -> Unit,
+    onclick: (HeroCard) -> Unit,
+    onPagingHeroes: () -> Unit
+) {
     val lazyListState = rememberLazyListState()
     val layoutInfo: LazyListSnapperLayoutInfo = rememberLazyListSnapperLayoutInfo(lazyListState)
-    val  maxItemFling = 1
+    val maxItemFling = 1
 
     var currentIndex by remember { mutableStateOf(0) }
 
@@ -64,26 +70,27 @@ fun RowHero(heros: List<HeroCard>, onValueChange: (Int) -> Unit, onclick: (HeroC
             .animateContentSize(),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        items(heros.size) {hero ->
+        items(heroes.size) { hero ->
+            if (hero == heroes.size - 1 && !isLoading && !endReached) onPagingHeroes()
             HeroItem(
-                heroCard = heros[hero],
+                heroCard = heroes[hero],
                 modifier = Modifier
                     .width(350.dp)
                     .height(550.dp)
-                    .clickable { onclick(heros[hero]) }
+                    .clickable { onclick(heroes[hero]) }
                     .graphicsLayer {
-                    val offset: Int = layoutInfo.currentItem?.offset!!
-                    val procentOffset: Float = abs(offset)/layoutInfo.endScrollOffset.toFloat()
-                    Log.e("OFFSET", offset.toString())
-                    lerp(
-                        start = 0.7f,
-                        stop = 1f,
-                        fraction = 1f - procentOffset
-                    ).also { scale ->
-                        scaleX = scale
-                        scaleY = scale
+                        val offset: Int = layoutInfo.currentItem?.offset!!
+                        val procentOffset: Float =
+                            abs(offset) / layoutInfo.endScrollOffset.toFloat()
+                        lerp(
+                            start = 0.7f,
+                            stop = 1f,
+                            fraction = 1f - procentOffset
+                        ).also { scale ->
+                            scaleX = scale
+                            scaleY = scale
+                        }
                     }
-                }
             )
         }
     }

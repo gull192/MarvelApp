@@ -33,5 +33,5 @@ class RoomModule {
     @Singleton
     @Provides
     fun provideLocalSaveRepository(dao: HeroDao) : LocalSaveRepository =
-        LocalSaveRepositoryImpl(dao) as LocalSaveRepository
+        LocalSaveRepositoryImpl(dao)
 }

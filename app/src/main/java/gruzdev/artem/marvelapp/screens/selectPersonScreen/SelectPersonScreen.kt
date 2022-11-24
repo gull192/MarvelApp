@@ -1,7 +1,9 @@
 package gruzdev.artem.marvelapp.screens.selectPersonScreen
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -49,17 +51,24 @@ private fun SelectPersonScreen(
             }
         }
     }
+
     when (uiState) {
         is SelectPersonUIState.DisplayHeroes -> DisplayHeroesScreen(
             uiState = uiState as SelectPersonUIState.DisplayHeroes,
             onCurrentIndexChange = { viewModel.sendEvent(SelectPersonUIEvent.OnCurrentIndexChange(it)) },
-            onClickHero = { viewModel.sendEvent(SelectPersonUIEvent.OnclickHero(it)) }
+            onClickHero = { viewModel.sendEvent(SelectPersonUIEvent.OnclickHero(it)) },
+            onPagingHeroes = {viewModel.sendEvent(SelectPersonUIEvent.OnLoadPagingData)}
         )
         is SelectPersonUIState.Loading -> LoadingScreen()
         is SelectPersonUIState.Error -> {
             val err = uiState as SelectPersonUIState.Error
+            Log.e("!!!!", err.error)
             ErrorScreen(err.error)
         }
+    }
+
+    SideEffect {
+        Log.e("CLASS", uiState.javaClass.name)
     }
 }
 
