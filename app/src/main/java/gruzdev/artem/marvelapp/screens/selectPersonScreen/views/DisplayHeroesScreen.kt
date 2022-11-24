@@ -1,9 +1,7 @@
 package gruzdev.artem.marvelapp.screens.selectPersonScreen.views
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -33,7 +31,8 @@ import gruzdev.artem.marvelapp.ui.theme.Typography
 fun DisplayHeroesScreen(
     uiState: SelectPersonUIState.DisplayHeroes,
     onCurrentIndexChange: (Int) -> Unit,
-    onClickHero: (HeroCard) -> Unit
+    onClickHero: (HeroCard) -> Unit,
+    onPagingHeroes: ()->Unit
 ) {
     Box(
         modifier = Modifier
@@ -58,13 +57,17 @@ fun DisplayHeroesScreen(
                 color = Color.White
             )
             Spacer(modifier = Modifier.height(32.dp))
-            RowHero(heros = uiState.listHero,
+            RowHero(
+                heroes = uiState.listHero,
+                isLoading = uiState.isLoading,
+                endReached = uiState.endReached,
+                onPagingHeroes = { onPagingHeroes() },
                 onValueChange = {
                     onCurrentIndexChange(it)
                 },
                 onclick = {
                     onClickHero(it)
-                }
+                },
             )
         }
     }
