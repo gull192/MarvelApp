@@ -1,13 +1,17 @@
 package gruzdev.artem.marvelapp.screens.personScreen
 
-data class PersonUIState (
-    val url: String = "",
-    val personName: String = "",
-    val description: String = ""
-){
-    companion object {
-        val Empty = PersonUIState()
+sealed class PersonUIState {
+    data class DisplayPerson(
+        val url: String = "",
+        val personName: String = "",
+        val description: String = ""
+    ) : PersonUIState() {
+        companion object {
+            val Empty = DisplayPerson()
+        }
     }
+    object Loading : PersonUIState()
+    data class Error (val error: String) : PersonUIState()
 }
 
 sealed interface PersonScreenUIEvent {
@@ -18,5 +22,4 @@ sealed interface PersonScreenUIEvent {
 
 sealed interface PersonScreenUIEffect {
     object NavigateBack : PersonScreenUIEffect
-    data class ErrorToLoadData(val error: String) : PersonScreenUIEffect
 }
