@@ -5,6 +5,6 @@ import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 
 interface DataManager {
-    suspend fun getAll() : Resource<List<HeroCard>>
+    suspend fun getNextHeroes(idLast: Int) : Resource<List<HeroCard>>
     suspend fun getHero(id: Int) : Resource<HeroInfo>
 }

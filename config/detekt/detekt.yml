@@ -183,7 +183,7 @@ style:
   LoopWithTooManyJumpStatements:
     active: true
   MagicNumber:
-    active: true
+    active: false
     ignorePropertyDeclaration: true
     ignoreCompanionObjectPropertyDeclaration: true
     ignoreAnnotated: ["androidx.compose.ui.tooling.preview.Preview", "org.junit.Test"]

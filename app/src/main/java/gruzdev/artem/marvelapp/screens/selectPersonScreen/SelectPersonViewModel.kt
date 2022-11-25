@@ -1,17 +1,13 @@
 package gruzdev.artem.marvelapp.screens.selectPersonScreen
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import dagger.assisted.Assisted
-import dagger.assisted.AssistedFactory
-import dagger.assisted.AssistedInject
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gruzdev.artem.marvelapp.core.repositore.network.Resource
+import gruzdev.artem.marvelapp.core.repositore.paging.DefaultPaginator
 import gruzdev.artem.marvelapp.dataManager.DataManager
-import gruzdev.artem.marvelapp.network.MarvelNetworkRepository
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
+import gruzdev.artem.marvelapp.ui.theme.Dune
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -25,11 +21,15 @@ class SelectPersonViewModel @Inject constructor(
     private val dataManager: DataManager
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(SelectPersonUIState.Empty)
+    private val _state = MutableStateFlow<SelectPersonUIState>(SelectPersonUIState.Loading)
     val state = _state.asStateFlow()
 
     private val _effect = MutableSharedFlow<SelectPersonUIEffect>()
     val effect = _effect.asSharedFlow()
+
+    private lateinit var paginator: DefaultPaginator<Int, HeroCard>
+
+    private var isFirstLoad = true
 
     fun sendEvent(event: SelectPersonUIEvent) {
         when (event) {
@@ -42,51 +42,91 @@ class SelectPersonViewModel @Inject constructor(
                 viewModelScope.launch {
                     navigateToHeroDetails(event.heroCard)
                 }
+
             SelectPersonUIEvent.OnOpenScreen ->
-                viewModelScope.launch { loadData() }
+                viewModelScope.launch {
+                    if (isFirstLoad) {
+                        _state.update {
+                            SelectPersonUIState.Loading
+                        }
+                        initPaginator()
+                        paginator.loadNextItems()
+                        isFirstLoad = false
+                    }
+                }
+
+            SelectPersonUIEvent.OnLoadPagingData ->
+                viewModelScope.launch {
+                    paginator.loadNextItems()
+                }
         }
     }
 
     private fun changeCurrentItem(newIndex: Int) {
-        Log.e("TAF", newIndex.toString())
+        val oldState: SelectPersonUIState.DisplayHeroes =
+            _state.value as SelectPersonUIState.DisplayHeroes
         _state.update {
-            it.copy(currentIndex = newIndex)
+            oldState.copy(
+                currentIndex = newIndex
+            )
         }
         _state.update {
-            it.copy(backgroundColor = state.value.listHero[newIndex].color)
+            oldState.copy(backgroundColor = oldState.listHero[newIndex].color)
         }
-        Log.e("COLOR", _state.value.backgroundColor.toString())
     }
 
     private suspend fun navigateToHeroDetails(heroCard: HeroCard) {
         _effect.emit(SelectPersonUIEffect.NavigateToPersonScreen(heroCard.id))
     }
 
-    private suspend fun loadData() {
-        when (val hero : Resource<List<HeroCard>> = dataManager.getAll()) {
-            is Resource.Success ->
-                updateView(hero.data!!)
-            is Resource.Error ->
-                showError(hero.message!!)
+    private fun setError(error: String) {
+        _state.update {
+            SelectPersonUIState.Error(error)
         }
     }
 
-    private suspend fun updateView(heroCards: List<HeroCard>) {
-        _state.update {
-            it.copy(
-                listHero = heroCards,
-                backgroundColor = heroCards[it.currentIndex].color,
-                getDataIsSuccessful = true
-            )
-        }
+    private fun initPaginator() {
+
+        paginator = DefaultPaginator(
+            initKey = castToDisplayState().currentOffset,
+            onLoadUpdated = { isLoading ->
+                if (_state.value is SelectPersonUIState.DisplayHeroes) {
+                    _state.update {
+                        castToDisplayState().copy(isLoading = isLoading)
+                    }
+                }
+            },
+            getNextKey = {
+                castToDisplayState().currentOffset + 20
+            },
+            onError = { error ->
+                Log.e("!!!",error )
+                setError(error)
+            },
+            onSuccess = { items, newKey ->
+                Log.e("ID", items.joinToString { it.title })
+                val displayState = castToDisplayState()
+                _state.update {
+                    displayState.copy(
+                        listHero = displayState.listHero + items,
+                        currentOffset = newKey,
+                        endReached = items.isEmpty(),
+                        backgroundColor = if (displayState.listHero.isNotEmpty()) {
+                            displayState.listHero[displayState.currentIndex].color
+                        } else {
+                            Dune
+                        }
+                    )
+                }
+            },
+            onRequest = {
+                dataManager.getNextHeroes(it)
+            }
+        )
     }
 
-    private fun showError(error: String) {
-        _state.update {
-            it.copy(
-                getDataIsSuccessful = false,
-                errorToLoadData = error
-            )
-        }
-    }
+    private inline fun castToDisplayState(): SelectPersonUIState.DisplayHeroes =
+        if (_state.value is SelectPersonUIState.DisplayHeroes)
+            _state.value as SelectPersonUIState.DisplayHeroes
+        else SelectPersonUIState.DisplayHeroes()
 }

@@ -19,7 +19,7 @@ class PersonScreenViewModel @Inject constructor(
     private val dataManager: DataManager
 ) : ViewModel(){
 
-    private val _state = MutableStateFlow(PersonUIState.Empty)
+    private val _state = MutableStateFlow<PersonUIState>(PersonUIState.Loading)
     val state = _state.asStateFlow()
 
     private val _effect = MutableSharedFlow<PersonScreenUIEffect>()
@@ -31,14 +31,17 @@ class PersonScreenViewModel @Inject constructor(
                 viewModelScope.launch {
                     getDataAfterNav(event.characterId)
                 }
-
-            PersonScreenUIEvent.OnOpenWithArg -> TODO()
+            PersonScreenUIEvent.OnBackClick ->
+                viewModelScope.launch {
+                    _effect.emit(PersonScreenUIEffect.NavigateBack)
+                }
+            else -> {}
         }
     }
 
-    private suspend fun updateView(heroInfo: HeroInfo) {
+    private  fun updateView(heroInfo: HeroInfo) {
         _state.update {
-            it.copy(
+            PersonUIState.DisplayPerson(
                 description = heroInfo.descriptionHero,
                 personName = heroInfo.heroName,
                 url = heroInfo.photoUrl
@@ -47,11 +50,20 @@ class PersonScreenViewModel @Inject constructor(
     }
 
     private suspend fun getDataAfterNav(id: Int) {
+        _state.update {
+            PersonUIState.Loading
+        }
         when (val hero : Resource<HeroInfo> = dataManager.getHero(id)) {
             is Resource.Success ->
                 updateView(hero.data!!)
-            is Resource.Error ->
-                _effect.emit(PersonScreenUIEffect.ErrorToLoadData(hero.message!!))
+            is Resource.Error -> setError(hero.message!!)
+            else -> {}
+        }
+    }
+
+    private fun setError(error: String) {
+        _state.update {
+            PersonUIState.Error(error)
         }
     }
 }

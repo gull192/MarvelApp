@@ -6,11 +6,10 @@ import gruzdev.artem.marvelapp.localSave.model.asHeroCard
 import gruzdev.artem.marvelapp.localSave.model.asHeroInfo
 import gruzdev.artem.marvelapp.localSave.model.asHeroInfoDb
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
-import javax.inject.Inject
 
 class LocalSaveRepositoryImpl(private val dao: HeroDao) : LocalSaveRepository {
-    override suspend fun getAll(): Resource<List<HeroCard>> {
-        val res = dao.getAllHero().map {
+    override suspend fun getNextHeroes(idLast: Int): Resource<List<HeroCard>> {
+        val res = dao.getNextHero(idLast).map {
             it.asHeroCard()
         }
         return if (res.isEmpty()) {

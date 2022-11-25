@@ -14,13 +14,18 @@ import kotlin.random.Random
 class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface) :
     MarvelNetworkRepository,
     BaseRepo() {
-    override suspend fun getAllHeroes(): Resource<List<HeroCard>> {
+    override suspend fun getNextHeroes(offset: Int): Resource<List<HeroCard>> {
         val hash = Hashing.md5("${1}${PRIVATE_KEY_MARVEL}${PUBLIC_KEY_MARVEL}")
-        val response: Resource<MarvelAPI> = safeApiCall { quest.getAllHeroes(hash = hash) }
+        val response: Resource<MarvelAPI> = safeApiCall {
+            quest.getNextHeroes(
+                hash = hash,
+                offset = offset
+            )
+        }
         val res: List<Result>? = response.data?.data?.results
-        val error = response?.message
+        val error = response.message
         val rand = Random(System.currentTimeMillis())
-        val data =  res?.map {
+        val data = res?.map {
             HeroCard(
                 id = it.id,
                 title = it.name,
@@ -45,7 +50,7 @@ class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface)
                 title = it.name,
                 photoURL = "${it.thumbnail.path}.${it.thumbnail.extension}",
                 descriptionHero = it.description,
-                color =  Color(rand.nextLong(0xFFFFFFFF))  // max value for color
+                color = Color(rand.nextLong(0xFFFFFFFF))  // max value for color
             )
         }
         val error = response.message

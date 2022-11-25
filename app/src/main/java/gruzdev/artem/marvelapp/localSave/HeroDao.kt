@@ -8,8 +8,8 @@ import gruzdev.artem.marvelapp.localSave.model.HeroInfoDb
 
 @Dao
 interface HeroDao {
-    @Query("SELECT * FROM hero")
-    suspend fun getAllHero() : List<HeroInfoDb>
+    @Query("SELECT * FROM hero WHERE id > :idLast ORDER BY id DESC LIMIT 20")
+    suspend fun getNextHero(idLast: Int) : List<HeroInfoDb>
 
     @Query("SELECT * FROM hero WHERE id = :id")
     suspend fun getHero(id: Int) : HeroInfoDb?
