@@ -3,8 +3,9 @@ plugins {
     id 'org.jetbrains.kotlin.android'
     id 'io.gitlab.arturbosch.detekt'
     id 'kotlin-android'
-    id("com.google.devtools.ksp") version "1.6.21-1.0.5"
+    id("com.google.devtools.ksp") version "1.6.21-1.0.6"
     id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
 apply plugin: 'io.gitlab.arturbosch.detekt'
 apply plugin: 'kotlin-android-extensions'
@@ -39,6 +40,9 @@ android {
         def baseUrlForMarvelAPI = "http://gateway.marvel.com"
         buildConfigField("String", "BASE_URL_FOR_MARVEL_API", "\"${baseUrlForMarvelAPI}\"")
 
+        def baseUriNav = "https://myapp.com"
+        buildConfigField("String", "BASE_URI_FOR_NAV", "\"${baseUriNav}\"")
+
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -63,7 +67,7 @@ android {
     }
     packagingOptions {
         resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += '/META-INF/*'
         }
     }
     applicationVariants.all {
@@ -76,6 +80,8 @@ android {
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.0'
+
     // snapper
     def snapper_version = "0.3.0"
     implementation "dev.chrisbanes.snapper:snapper:$snapper_version"
@@ -85,7 +91,7 @@ dependencies {
     implementation("io.coil-kt:coil-compose:$coil_version")
 
     //Compose Destinations
-    def compose_destinations_version = "1.5.23-beta"
+    def compose_destinations_version = "1.6.27-beta"
     implementation("io.github.raamcosta.compose-destinations:core:$compose_destinations_version")
     ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_version")
 

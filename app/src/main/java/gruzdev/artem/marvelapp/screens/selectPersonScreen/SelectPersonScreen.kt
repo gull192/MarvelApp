@@ -7,10 +7,12 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
+import com.ramcosta.composedestinations.annotation.FULL_ROUTE_PLACEHOLDER
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import gruzdev.artem.marvelapp.core.rememberStateWithLifecycle
+import gruzdev.artem.marvelapp.core.ui.rememberStateWithLifecycle
 import gruzdev.artem.marvelapp.core.showToast
 import gruzdev.artem.marvelapp.screens.destinations.PersonScreenDestination
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.DisplayHeroesScreen
@@ -18,7 +20,14 @@ import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.ErrorScreen
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.LoadingScreen
 
 @RootNavGraph(start = true)
-@Destination
+@Destination(
+    route = "main",
+    deepLinks = [
+        DeepLink(
+            uriPattern = "https://myapp.com/$FULL_ROUTE_PLACEHOLDER"
+        )
+    ]
+)
 @Composable
 fun SelectPersonScreen(navigator: DestinationsNavigator) {
     val viewModel: SelectPersonViewModel = hiltViewModel()

@@ -1,4 +1,4 @@
-package gruzdev.artem.marvelapp.core
+package gruzdev.artem.marvelapp.core.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State

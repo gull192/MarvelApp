@@ -1,4 +1,4 @@
-package gruzdev.artem.marvelapp.core.navigation.model
+package gruzdev.artem.marvelapp.core.navigation
 
 import gruzdev.artem.marvelapp.core.model.HeroInfo
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
