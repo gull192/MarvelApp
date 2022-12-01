@@ -27,9 +27,7 @@ class LocalSaveRepositoryImpl(private val dao: HeroDao) : LocalSaveRepository {
         val res =  dao.getHero(id)?.asHeroInfo()
         return if (res == null) {
             Resource.Error(
-                "you are not connected to the internet" +
-                        " and you do not have a local save." +
-                        " Please check your internet connection"
+                "Id not founded :("
             )
         } else {
             Resource.Success(res)

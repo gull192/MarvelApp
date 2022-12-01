@@ -20,12 +20,13 @@ class PushingService  : FirebaseMessagingService() {
         val messageTitle = remoteMessage.notification?.title
         val messageBody = remoteMessage.notification?.body
         val heroId = remoteMessage.data["hero_id"]?.toInt()
-        if (messageTitle != null && messageBody != null )
+        if (messageTitle != null && messageBody != null ) {
             sendNotification(
                 messageTitle = messageTitle,
                 messageBody = messageBody,
                 id = heroId!!
             )
+        }
         super.onMessageReceived(remoteMessage)
     }
 
@@ -38,10 +39,12 @@ class PushingService  : FirebaseMessagingService() {
         val uriForPersonScreen = "https://myapp.com/$validUserScreenRoute".toUri()
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
         val flag =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 PendingIntent.FLAG_IMMUTABLE
-            else
+            }
+            else {
                 0
+            }
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
