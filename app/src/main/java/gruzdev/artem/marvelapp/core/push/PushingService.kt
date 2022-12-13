@@ -1,11 +1,13 @@
 package gruzdev.artem.marvelapp.core.push
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.TaskStackBuilder
 import android.content.Intent
 import android.os.Build
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.net.toUri
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -14,12 +16,14 @@ import gruzdev.artem.marvelapp.MainActivity
 import gruzdev.artem.marvelapp.R
 import gruzdev.artem.marvelapp.screens.destinations.PersonScreenDestination
 
+@SuppressLint("MissingFirebaseInstanceTokenRefresh")
 class PushingService  : FirebaseMessagingService() {
 
     override fun onMessageReceived (remoteMessage: RemoteMessage) {
         val messageTitle = remoteMessage.notification?.title
         val messageBody = remoteMessage.notification?.body
         val heroId = remoteMessage.data["hero_id"]?.toInt()
+        Log.e("MESSAGE", "message")
         if (messageTitle != null && messageBody != null ) {
             sendNotification(
                 messageTitle = messageTitle,
@@ -38,13 +42,7 @@ class PushingService  : FirebaseMessagingService() {
         val validUserScreenRoute = PersonScreenDestination(characterId = id).route
         val uriForPersonScreen = "https://myapp.com/$validUserScreenRoute".toUri()
         val notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        val flag =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                PendingIntent.FLAG_IMMUTABLE
-            }
-            else {
-                0
-            }
+        val flag = PendingIntent.FLAG_IMMUTABLE
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationChannel = NotificationChannel(
@@ -54,7 +52,6 @@ class PushingService  : FirebaseMessagingService() {
             )
             notificationChannel.description = "description"
             notificationChannel.name = "Channel Name"
-            assert(notificationManager != null)
             notificationManager.createNotificationChannel(notificationChannel)
         }
 

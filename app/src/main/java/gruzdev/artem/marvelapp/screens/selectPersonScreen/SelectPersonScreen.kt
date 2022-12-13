@@ -60,7 +60,6 @@ private fun SelectPersonScreen(
             }
         }
     }
-
     when (uiState) {
         is SelectPersonUIState.DisplayHeroes -> DisplayHeroesScreen(
             uiState = uiState as SelectPersonUIState.DisplayHeroes,

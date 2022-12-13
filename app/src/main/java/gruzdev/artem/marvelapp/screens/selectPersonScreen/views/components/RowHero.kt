@@ -2,6 +2,7 @@
 
 package gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +28,8 @@ import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import dev.chrisbanes.snapper.LazyListSnapperLayoutInfo
 import dev.chrisbanes.snapper.rememberLazyListSnapperLayoutInfo
+import java.lang.Float.max
+import java.lang.Float.min
 import kotlin.math.abs
 
 @OptIn(ExperimentalSnapperApi::class)
@@ -79,16 +82,29 @@ fun RowHero(
                     .height(550.dp)
                     .clickable { onclick(heroes[hero]) }
                     .graphicsLayer {
-                        val offset: Int = layoutInfo.currentItem?.offset!!
-                        val procentOffset: Float =
-                            abs(offset) / layoutInfo.endScrollOffset.toFloat()
-                        lerp(
-                            start = 0.7f,
-                            stop = 1f,
-                            fraction = 1f - procentOffset
-                        ).also { scale ->
-                            scaleX = scale
-                            scaleY = scale
+                        val offset: Int? = layoutInfo.currentItem?.offset
+                        if (offset != null) {
+                            val procentOffset: Float = min(
+                                abs(offset) / layoutInfo.endScrollOffset.toFloat(), 1f
+                            ) // get global offset
+                            val deltaOffset =
+                                0.3f * procentOffset // delta offset fot delta scale (1f - 0.7f = 0.3f)
+                            if (hero == layoutInfo.currentItem?.index) {
+                                val scale = 1f - deltaOffset
+                                scaleX = scale
+                                scaleY = scale
+                            } else if (hero - 1 == layoutInfo.currentItem?.index && offset < 0) {
+                                val scale = 0.7f + deltaOffset
+                                scaleX = scale
+                                scaleY = scale
+                            } else if (hero + 1 == layoutInfo.currentItem?.index && offset > 0) {
+                                val scale = 0.7f + deltaOffset
+                                scaleX = scale
+                                scaleY = scale
+                            } else {
+                                scaleX = 0.7f
+                                scaleY = 0.7f
+                            }
                         }
                     }
             )
