@@ -1,23 +1,14 @@
 package gruzdev.artem.marvelapp.screens.selectPersonScreen.views
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -42,12 +33,8 @@ fun DisplayHeroesScreen(
             .fillMaxSize()
             .background(Dune)
     ) {
-        val screenOrientation = LocalConfiguration.current.orientation;
-        LaunchedEffect(key1 = screenOrientation) {
-            Log.e("Orentation", "I rotate $screenOrientation")
-        }
         BackgroundElement(color = uiState.backgroundColor)
-        Column {
+        Column (modifier = Modifier.fillMaxSize()) {
             Image(
                 painter = painterResource(R.drawable.marvel),
                 contentDescription = null,

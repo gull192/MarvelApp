@@ -61,22 +61,25 @@ private fun SelectPersonScreen(
         }
     }
     when (uiState) {
-        is SelectPersonUIState.DisplayHeroes -> DisplayHeroesScreen(
-            uiState = uiState as SelectPersonUIState.DisplayHeroes,
-            onCurrentIndexChange = { viewModel.sendEvent(SelectPersonUIEvent.OnCurrentIndexChange(it)) },
-            onClickHero = { viewModel.sendEvent(SelectPersonUIEvent.OnclickHero(it)) },
-            onPagingHeroes = {viewModel.sendEvent(SelectPersonUIEvent.OnLoadPagingData)}
-        )
+        is SelectPersonUIState.DisplayHeroes -> {
+            DisplayHeroesScreen(
+                uiState = uiState as SelectPersonUIState.DisplayHeroes,
+                onCurrentIndexChange = {
+                    viewModel.sendEvent(
+                        SelectPersonUIEvent.OnCurrentIndexChange(
+                            it
+                        )
+                    )
+                },
+                onClickHero = { viewModel.sendEvent(SelectPersonUIEvent.OnclickHero(it)) },
+                onPagingHeroes = { viewModel.sendEvent(SelectPersonUIEvent.OnLoadPagingData) }
+            )
+        }
         is SelectPersonUIState.Loading -> LoadingScreen()
         is SelectPersonUIState.Error -> {
             val err = uiState as SelectPersonUIState.Error
-            Log.e("!!!!", err.error)
             ErrorScreen(err.error)
         }
-    }
-
-    SideEffect {
-        Log.e("CLASS", uiState.javaClass.name)
     }
 }
 
