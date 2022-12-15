@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -19,9 +18,6 @@ import gruzdev.artem.marvelapp.screens.selectPersonScreen.SelectPersonUIState
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components.BackgroundElement
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components.RowHero
-import gruzdev.artem.marvelapp.ui.theme.Dune
-import gruzdev.artem.marvelapp.ui.theme.MarvelAppTheme
-import gruzdev.artem.marvelapp.ui.theme.Typography
 
 @Composable
 fun DisplayHeroesScreen(

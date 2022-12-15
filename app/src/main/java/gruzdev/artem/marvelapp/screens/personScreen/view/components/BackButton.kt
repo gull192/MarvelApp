@@ -3,6 +3,7 @@ package gruzdev.artem.marvelapp.screens.personScreen.view.components
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.runtime.Composable
@@ -17,7 +18,7 @@ fun BackButton( onClick: () -> Unit, modifier: Modifier = Modifier) {
             imageVector = Icons.Default.ArrowBack,
             contentDescription = null,
             modifier = Modifier.size(32.dp),
-            tint = Color.White
+            tint = MaterialTheme.colors.onSecondary
         )
     }
 }

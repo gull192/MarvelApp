@@ -2,7 +2,6 @@
 
 package gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components
 
-import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -20,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.util.lerp
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.snapper.ExperimentalSnapperApi
@@ -28,7 +26,6 @@ import dev.chrisbanes.snapper.rememberSnapperFlingBehavior
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import dev.chrisbanes.snapper.LazyListSnapperLayoutInfo
 import dev.chrisbanes.snapper.rememberLazyListSnapperLayoutInfo
-import java.lang.Float.max
 import java.lang.Float.min
 import kotlin.math.abs
 
