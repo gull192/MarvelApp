@@ -1,6 +1,7 @@
 package gruzdev.artem.marvelapp.screens.selectPersonScreen
 
 import android.util.Log
+import androidx.compose.material.MaterialTheme
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -8,6 +9,7 @@ import gruzdev.artem.marvelapp.core.repositore.paging.DefaultPaginator
 import gruzdev.artem.marvelapp.dataManager.DataManager
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import gruzdev.artem.marvelapp.ui.theme.Dune
+import gruzdev.artem.marvelapp.ui.theme.MarvelAppTheme
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -104,7 +106,6 @@ class SelectPersonViewModel @Inject constructor(
                 setError(error)
             },
             onSuccess = { items, newKey ->
-                Log.e("ID", items.joinToString { it.title })
                 val displayState = castToDisplayState()
                 _state.update {
                     displayState.copy(

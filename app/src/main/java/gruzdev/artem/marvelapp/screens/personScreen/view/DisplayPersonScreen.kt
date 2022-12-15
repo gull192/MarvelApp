@@ -1,6 +1,7 @@
 package gruzdev.artem.marvelapp.screens.personScreen.view
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,8 +33,9 @@ fun DisplayPersonScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp),
-                    style = Typography.h3,
-                    color = Color.White,
+                    style = MaterialTheme.typography.h3,
+                    color = MaterialTheme.colors.onSecondary,
+                    maxLines = 4
                 )
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
@@ -41,8 +43,9 @@ fun DisplayPersonScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(start = 16.dp),
-                    style = Typography.h4,
-                    color = Color.White,
+                    style = MaterialTheme.typography.h4,
+                    color = MaterialTheme.colors.onSecondary,
+                    maxLines = 6
                 )
             }
         }

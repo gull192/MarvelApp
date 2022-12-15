@@ -3,6 +3,7 @@ package gruzdev.artem.marvelapp.screens.selectPersonScreen.views
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,6 +20,7 @@ import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components.BackgroundElement
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components.RowHero
 import gruzdev.artem.marvelapp.ui.theme.Dune
+import gruzdev.artem.marvelapp.ui.theme.MarvelAppTheme
 import gruzdev.artem.marvelapp.ui.theme.Typography
 
 @Composable
@@ -31,7 +33,7 @@ fun DisplayHeroesScreen(
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .background(Dune)
+            .background(MaterialTheme.colors.background)
     ) {
         BackgroundElement(color = uiState.backgroundColor)
         Column (modifier = Modifier.fillMaxSize()) {
@@ -41,14 +43,15 @@ fun DisplayHeroesScreen(
                 modifier = Modifier
                     .scale(0.4f)
                     .align(Alignment.CenterHorizontally)
+                    .statusBarsPadding()
             )
             Spacer(modifier = Modifier.width(32.dp))
             Text(
                 text = stringResource(id = R.string.main_text),
                 modifier = Modifier.fillMaxWidth(),
                 textAlign = TextAlign.Center,
-                style = Typography.h4,
-                color = Color.White
+                style = MaterialTheme.typography.h4,
+                color = MaterialTheme.colors.onSecondary
             )
             Spacer(modifier = Modifier.height(32.dp))
             RowHero(

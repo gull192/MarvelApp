@@ -3,6 +3,7 @@ package gruzdev.artem.marvelapp.screens.personScreen.view
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -16,13 +17,13 @@ fun ErrorScreen(error: String, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Dune)
+            .background(MaterialTheme.colors.background)
     ) {
         Text (
             text = error,
             modifier = Modifier.align(Alignment.Center),
-            color = Color.Red,
-            style = Typography.h4
+            color = MaterialTheme.colors.error,
+            style = MaterialTheme.typography.h4
         )
     }
 }
