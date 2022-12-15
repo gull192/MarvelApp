@@ -15,7 +15,7 @@ fun LoadingScreen(modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(Dune)
+            .background(MaterialTheme.colors.background)
     ) {
         CircularProgressIndicator(
             modifier = Modifier.align(Alignment.Center),

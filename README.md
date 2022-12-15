@@ -16,19 +16,17 @@ This is my study project. I've been practicing the basic concepts for android de
 
 ### Main screens (In project SelectPersonScreen)
 
-|Display                       |Loading                      |
-|:----------------------------:|:---------------------------:|
-|<img src="assets/headlines_framed.png" height="400">|<img src="assets/search_framed.png" height="400">|
+|                     Display                     |                      Loading                       |
+|:-----------------------------------------------:|:--------------------------------------------------:|
+| <img src="assets/main_screen.png" height="400"> | <img src="assets/loading_screen.png" height="400"> |
 
-|About                        |Article details              |
-|:---------------------------:|:---------------------------:|
-|<img src="assets/about_framed.png" height="400">|<img src="assets/article_details_framed.png" height="400">|
 
-### Theiming
+### Hero screen
 
-|Light Theme                   |Dark Theme                   |
-|:----------------------------:|:---------------------------:|
-|<img src="assets/headlines_framed.png" height="400">|<img src="assets/headlines_dark_framed.png" height="400">| 
+|                    Hero Scree                     |
+|:-------------------------------------------------:|
+| <img src="assets/person_screen.png" height="400"> |
+
 
 ## Used dependencies
 * DI - [Hilt](https://dagger.dev/hilt/)
