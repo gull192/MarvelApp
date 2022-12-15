@@ -23,7 +23,7 @@ This is my study project. I've been practicing the basic concepts for android de
 
 ### Hero screen
 
-|                    Hero Scree                     |
+|                    Hero Screen                    |
 |:-------------------------------------------------:|
 | <img src="assets/person_screen.png" height="400"> |
 
