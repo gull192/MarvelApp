@@ -22,8 +22,8 @@ private val LightColorPalette = lightColors(
     primaryVariant = Purple700,
     secondary = Color.DarkGray,
     onPrimary = Dune,
-    background = Dune,
-    onSecondary = Color.White,
+    background = ColumbiaBlue,
+    onSecondary = Color.Black,
     error = Color.Red
 )
 
