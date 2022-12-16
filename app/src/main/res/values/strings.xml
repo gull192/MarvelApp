@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name" translatable="false">MarvelApp</string>
+    <string name="main_text" translatable="true">Choose your hero</string>
+</resources>

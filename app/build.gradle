@@ -1,10 +1,18 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'io.gitlab.arturbosch.detekt'
+    id 'kotlin-android'
+    id("com.google.devtools.ksp") version "1.6.21-1.0.6"
+    id 'kotlin-kapt'
+    id 'com.google.gms.google-services'
 }
+apply plugin: 'io.gitlab.arturbosch.detekt'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'com.google.dagger.hilt.android'
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "gruzdev.artem.marvelapp"
@@ -13,15 +21,34 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary true
         }
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments += ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
+
+        def publicKeyMarvel = "47654a19268cc430bdfb2a729861b221"
+        buildConfigField("String", "PUBLIC_KEY_MARVEL", "\"${publicKeyMarvel}\"")
+
+        def privateKeyMarvel = "c419742b730333e5dd55b1f532c2b2aec7f1a33d"
+        buildConfigField("String", "PRIVATE_KEY_MARVEL", "\"${privateKeyMarvel}\"")
+
+        def baseUrlForMarvelAPI = "http://gateway.marvel.com"
+        buildConfigField("String", "BASE_URL_FOR_MARVEL_API", "\"${baseUrlForMarvelAPI}\"")
+
+        def baseUriNav = "https://myapp.com"
+        buildConfigField("String", "BASE_URI_FOR_NAV", "\"${baseUriNav}\"")
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -40,23 +67,54 @@ android {
     }
     packagingOptions {
         resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+            excludes += '/META-INF/*'
+        }
+    }
+    applicationVariants.all {
+        kotlin.sourceSets {
+            getByName(name) {
+                kotlin.srcDir("build/generated/ksp/$name/kotlin")
+            }
         }
     }
 }
 
 dependencies {
+    implementation 'com.google.firebase:firebase-messaging-ktx:23.1.0'
+
     // snapper
     def snapper_version = "0.3.0"
     implementation "dev.chrisbanes.snapper:snapper:$snapper_version"
 
     // coil
-    def coil_version = "2.1.0"
+    def coil_version = "2.2.2"
     implementation("io.coil-kt:coil-compose:$coil_version")
 
-    // navigation
-    def nav_version = "2.5.2"
-    implementation("androidx.navigation:navigation-compose:$nav_version")
+    //Compose Destinations
+    def compose_destinations_version = "1.6.27-beta"
+    implementation("io.github.raamcosta.compose-destinations:core:$compose_destinations_version")
+    ksp("io.github.raamcosta.compose-destinations:ksp:$compose_destinations_version")
+
+    //retrofit
+    implementation "com.squareup.retrofit2:retrofit:2.9.0"
+    implementation "com.squareup.okhttp3:logging-interceptor:4.9.1"
+    implementation "com.squareup.retrofit2:converter-moshi:2.9.0"
+
+    //di
+    def dagger_version = "2.44"
+    def compose_hilt_navigation_version = "1.0.0"
+    implementation("com.google.dagger:hilt-android:$dagger_version")
+    kapt("com.google.dagger:hilt-android-compiler:$dagger_version")
+    implementation ("androidx.hilt:hilt-navigation-compose:$compose_hilt_navigation_version")
+
+    // room
+    def room_version = "2.5.0-alpha02"
+    implementation "androidx.room:room-ktx:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+
+    // To use Kotlin annotation processing tool (kapt)
+    kapt "androidx.room:room-compiler:$room_version"
 
     // auto gen
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
@@ -66,12 +124,13 @@ dependencies {
     implementation "androidx.compose.material:material:$compose_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
-    implementation 'androidx.activity:activity-compose:1.3.1'
+    implementation 'androidx.activity:activity-compose:1.6.1'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.4.0'
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_version"
-}
 
+    detektPlugins("ru.kode:detekt-rules-compose:1.2.2")
+}
