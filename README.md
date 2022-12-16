@@ -27,6 +27,23 @@ This is my study project. I've been practicing the basic concepts for android de
 |:-------------------------------------------------:|
 | <img src="assets/person_screen.png" height="400"> |
 
+### Theming
+
+|                      Dark                       |                      Light                      |
+|:-----------------------------------------------:|:-----------------------------------------------:|
+| <img src="assets/main_screen.png" height="400"> | <img src="assets/light_theme.png" height="400"> |
+
+### Portrait and Landscape
+
+|                    Portrait                     |                   Landscape                    |
+|:-----------------------------------------------:|:----------------------------------------------:|
+| <img src="assets/light_theme.png" height="400"> | <img src="assets/land_scape.png" height="400"> |
+
+### Localization
+
+|                        Ru                        |                       En                       |
+|:------------------------------------------------:|:----------------------------------------------:|
+| <img src="assets/localization.png" height="400"> | <img src="assets/land_scape.png" height="400"> |
 
 ## Used dependencies
 * DI - [Hilt](https://dagger.dev/hilt/)
