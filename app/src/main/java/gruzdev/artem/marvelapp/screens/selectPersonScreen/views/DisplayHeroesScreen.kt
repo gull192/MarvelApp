@@ -20,7 +20,7 @@ import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components.Backg
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.components.RowHero
 
 @Composable
-fun DisplayHeroesScreen(
+fun DisplayHeroesScreenPortrait(
     uiState: SelectPersonUIState.DisplayHeroes,
     onCurrentIndexChange: (Int) -> Unit,
     onClickHero: (HeroCard) -> Unit,
@@ -49,6 +49,58 @@ fun DisplayHeroesScreen(
                 style = MaterialTheme.typography.h4,
                 color = MaterialTheme.colors.onSecondary
             )
+            Spacer(modifier = Modifier.height(32.dp))
+            RowHero(
+                heroes = uiState.listHero,
+                isLoading = uiState.isLoading,
+                endReached = uiState.endReached,
+                onPagingHeroes = { onPagingHeroes() },
+                onValueChange = {
+                    onCurrentIndexChange(it)
+                },
+                onclick = {
+                    onClickHero(it)
+                },
+            )
+        }
+    }
+}
+
+@Composable
+fun DisplayHeroesScreenLandscape(
+    uiState: SelectPersonUIState.DisplayHeroes,
+    onCurrentIndexChange: (Int) -> Unit,
+    onClickHero: (HeroCard) -> Unit,
+    onPagingHeroes: ()->Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.background)
+    ) {
+        BackgroundElement(color = uiState.backgroundColor)
+        Row (modifier = Modifier.fillMaxSize()) {
+            Column (modifier = Modifier
+                .align(Alignment.CenterVertically)
+                .width(300.dp)
+            ){
+                Image(
+                    painter = painterResource(R.drawable.marvel),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .scale(0.4f)
+                        .align(Alignment.CenterHorizontally)
+                        .statusBarsPadding()
+                )
+                Spacer(modifier = Modifier.width(32.dp))
+                Text(
+                    text = stringResource(id = R.string.main_text),
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center,
+                    style = MaterialTheme.typography.h4,
+                    color = MaterialTheme.colors.onSecondary
+                )
+            }
             Spacer(modifier = Modifier.height(32.dp))
             RowHero(
                 heroes = uiState.listHero,

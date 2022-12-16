@@ -2,13 +2,13 @@ package gruzdev.artem.marvelapp.screens.personScreen
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.ramcosta.composedestinations.annotation.DeepLink
 import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.FULL_ROUTE_PLACEHOLDER
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import gruzdev.artem.marvelapp.core.ui.rememberStateWithLifecycle
 import gruzdev.artem.marvelapp.screens.personScreen.view.DisplayPersonScreen
 import gruzdev.artem.marvelapp.screens.personScreen.view.ErrorScreen
 import gruzdev.artem.marvelapp.screens.personScreen.view.LoadingScreen
@@ -36,7 +36,7 @@ private fun PersonScreen(
     viewModel: PersonScreenViewModel,
     onBack: () -> Unit
 ) {
-    val uiState by rememberStateWithLifecycle(viewModel.state)
+    val uiState by viewModel.state.collectAsState()
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {

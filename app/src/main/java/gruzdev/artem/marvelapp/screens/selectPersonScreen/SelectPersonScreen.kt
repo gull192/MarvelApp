@@ -1,7 +1,9 @@
 package gruzdev.artem.marvelapp.screens.selectPersonScreen
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -10,10 +12,11 @@ import com.ramcosta.composedestinations.annotation.Destination
 import com.ramcosta.composedestinations.annotation.FULL_ROUTE_PLACEHOLDER
 import com.ramcosta.composedestinations.annotation.RootNavGraph
 import com.ramcosta.composedestinations.navigation.DestinationsNavigator
-import gruzdev.artem.marvelapp.core.ui.rememberStateWithLifecycle
 import gruzdev.artem.marvelapp.core.showToast
+import gruzdev.artem.marvelapp.core.ui.CallWithOrientation
 import gruzdev.artem.marvelapp.screens.destinations.PersonScreenDestination
-import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.DisplayHeroesScreen
+import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.DisplayHeroesScreenLandscape
+import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.DisplayHeroesScreenPortrait
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.ErrorScreen
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.views.LoadingScreen
 
@@ -45,8 +48,9 @@ private fun SelectPersonScreen(
     viewModel: SelectPersonViewModel,
     onNavigateToPersonScreen: (Int) -> Unit
 ) {
-    val uiState by rememberStateWithLifecycle(viewModel.state)
+    val uiState by viewModel.state.collectAsState()
     val context = LocalContext.current
+
     LaunchedEffect(Unit) {
         viewModel.effect.collect { effect ->
             when (effect) {
@@ -60,18 +64,37 @@ private fun SelectPersonScreen(
     }
     when (uiState) {
         is SelectPersonUIState.DisplayHeroes -> {
-            DisplayHeroesScreen(
-                uiState = uiState as SelectPersonUIState.DisplayHeroes,
-                onCurrentIndexChange = {
-                    viewModel.sendEvent(
-                        SelectPersonUIEvent.OnCurrentIndexChange(
-                            it
+            val state = uiState as SelectPersonUIState.DisplayHeroes
+            CallWithOrientation(
+                LandScape = {
+                DisplayHeroesScreenLandscape(
+                    uiState = state,
+                    onCurrentIndexChange = {
+                        viewModel.sendEvent(
+                            SelectPersonUIEvent.OnCurrentIndexChange(
+                                it
+                            )
                         )
-                    )
-                },
-                onClickHero = { viewModel.sendEvent(SelectPersonUIEvent.OnclickHero(it)) },
-                onPagingHeroes = { viewModel.sendEvent(SelectPersonUIEvent.OnLoadPagingData) }
+                    },
+                    onClickHero = { viewModel.sendEvent(SelectPersonUIEvent.OnclickHero(it)) },
+                    onPagingHeroes = { viewModel.sendEvent(SelectPersonUIEvent.OnLoadPagingData) }
+                )
+            },
+            Portrait = {
+                DisplayHeroesScreenPortrait(
+                    uiState = state,
+                    onCurrentIndexChange = {
+                        viewModel.sendEvent(
+                            SelectPersonUIEvent.OnCurrentIndexChange(
+                                it
+                            )
+                        )
+                    },
+                    onClickHero = { viewModel.sendEvent(SelectPersonUIEvent.OnclickHero(it)) },
+                    onPagingHeroes = { viewModel.sendEvent(SelectPersonUIEvent.OnLoadPagingData) }
+                )}
             )
+
         }
         is SelectPersonUIState.Loading -> LoadingScreen()
         is SelectPersonUIState.Error -> {
