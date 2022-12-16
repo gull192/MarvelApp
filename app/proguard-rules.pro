@@ -19,4 +19,6 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
--keep class gruzdev.artem.marvelapp.network.model.*
+-keepclassmembers class gruzdev.artem.marvelapp.network.model.* {
+   public *;
+}
