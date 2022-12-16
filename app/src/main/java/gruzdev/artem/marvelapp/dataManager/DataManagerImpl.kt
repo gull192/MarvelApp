@@ -1,5 +1,6 @@
 package gruzdev.artem.marvelapp.dataManager
 
+import android.util.Log
 import gruzdev.artem.marvelapp.core.model.HeroInfo
 import gruzdev.artem.marvelapp.core.repositore.network.Resource
 import gruzdev.artem.marvelapp.localSave.LocalSaveRepository
@@ -12,9 +13,12 @@ class DataManagerImpl(
 ) : DataManager {
     override suspend fun getNextHeroes(idLast: Int): Resource<List<HeroCard>> {
         when (val hero : Resource<List<HeroCard>> = networkRepository.getNextHeroes(idLast)) {
-            is Resource.Success ->
+            is Resource.Success -> {
                 localSaveRepository.insertAll(hero.data!!)
-            else -> {}
+            }
+            else -> {
+                Log.e("Error here", "${hero.message}")
+            }
         }
         return localSaveRepository.getNextHeroes(idLast)
     }

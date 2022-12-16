@@ -1,5 +1,6 @@
 package gruzdev.artem.marvelapp.core.repositore.network
 
+import android.util.Log
 import com.squareup.moshi.Moshi
 import gruzdev.artem.marvelapp.core.repositore.network.model.MarvelErrorResponse
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +25,7 @@ open class BaseRepo {
                 val response: Response<T> = apiToBeCalled()
 
                 if (response.isSuccessful) {
+                    Log.e("Convert", "${response.body()}")
                     // In case of success response we
                     // are returning Resource.Success object
                     // by passing our data in it.
@@ -63,6 +65,7 @@ open class BaseRepo {
                 moshiAdapter.fromJson(it)
             }
         } catch (exception: Exception) {
+            Log.e("Moshi", "${exception.message}")
             throw exception
         }
     }
