@@ -37,13 +37,13 @@ This is my study project. I've been practicing the basic concepts for android de
 
 |                    Portrait                     |                   Landscape                    |
 |:-----------------------------------------------:|:----------------------------------------------:|
-| <img src="assets/light_theme.png" height="400"> | <img src="assets/land_scape.png" height="400"> |
+| <img src="assets/light_theme.png" height="400"> | <img src="assets/land_scape.png" height="200"> |
 
 ### Localization
 
-|                        Ru                        |                       En                       |
+|                        Ru                        |                      Eng                       |
 |:------------------------------------------------:|:----------------------------------------------:|
-| <img src="assets/localization.png" height="400"> | <img src="assets/land_scape.png" height="400"> |
+| <img src="assets/localization.png" height="200"> | <img src="assets/land_scape.png" height="200"> |
 
 ## Used dependencies
 * DI - [Hilt](https://dagger.dev/hilt/)
