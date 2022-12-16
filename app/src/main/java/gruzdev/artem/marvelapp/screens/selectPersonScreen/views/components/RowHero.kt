@@ -102,6 +102,8 @@ fun RowHero(
                                 scaleX = 0.7f
                                 scaleY = 0.7f
                             }
+                        } else {
+
                         }
                     }
             )

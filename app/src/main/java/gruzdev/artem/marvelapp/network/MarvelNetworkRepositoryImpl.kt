@@ -1,5 +1,6 @@
 package gruzdev.artem.marvelapp.network
 
+import androidx.annotation.Keep
 import androidx.compose.ui.graphics.Color
 import gruzdev.artem.marvelapp.BuildConfig.PRIVATE_KEY_MARVEL
 import gruzdev.artem.marvelapp.core.Hashing
@@ -11,6 +12,7 @@ import gruzdev.artem.marvelapp.network.model.Result
 import gruzdev.artem.marvelapp.screens.selectPersonScreen.model.HeroCard
 import kotlin.random.Random
 
+@Keep
 class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface) :
     MarvelNetworkRepository,
     BaseRepo() {
@@ -23,7 +25,8 @@ class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface)
             )
         }
         val res: List<Result>? = response.data?.data?.results
-        val error = response.message
+        var error = response.message
+        if (error == null) error = "I broke here"
         val rand = Random(System.currentTimeMillis())
         val data = res?.map {
             HeroCard(
@@ -34,7 +37,7 @@ class MarvelNetworkRepositoryImpl constructor(private val quest: QuestInterface)
                 color = Color(rand.nextLong(0xFFFFFFFF)) // max value for color
             )
         }
-        return if (data == null) Resource.Error(error!!) else Resource.Success(data)
+        return if (data == null) Resource.Error(error) else Resource.Success(data)
     }
 
     override suspend fun getHeroInfo(characterId: Int): Resource<HeroCard> {
