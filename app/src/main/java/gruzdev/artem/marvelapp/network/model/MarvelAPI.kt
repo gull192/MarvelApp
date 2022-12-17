@@ -1,7 +1,9 @@
 package gruzdev.artem.marvelapp.network.model
 
+import androidx.annotation.Keep
 import com.squareup.moshi.Json
 
+@Keep
 data class MarvelAPI(
     val attributionHTML: String,
     val attributionText: String,
